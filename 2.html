@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success Stories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --red: #e63946;
+      --t900: #0f172a;
+      --t700: #334155;
+      --t500: #64748b;
+      --t400: #94a3b8;
+      --white: #ffffff;
+      --subtle: #f8fafc;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+    }
+
+    /* ── Section ── */
+    .wss-section {
+      width: 100%;
+      max-width: 1100px;
+      background: var(--subtle);
+      border-radius: 24px;
+      padding: 4rem 2rem 3rem;
+    }
+
+    /* ── Header ── */
+    .wss-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fff0f0;
+      color: var(--red);
+      border: 1px solid rgba(230,57,70,0.2);
+      border-radius: 50px;
+      padding: 0.35rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      color: var(--t900);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+    }
+    .section-title .accent { color: var(--red); }
+    .section-sub {
+      color: var(--t500);
+      font-size: 0.97rem;
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Slider ── */
+    .cs-slider {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cs-track {
+      display: flex;
+      transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+      will-change: transform;
+    }
+
+    .cs-slide {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+
+    /* ── Case Study Layout ── */
+    .cs-inner {
+      display: grid;
+      grid-template-rows: auto auto;
+      gap: 0;
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+
+    /* Screenshot area */
+    .cs-screenshot {
+      position: relative;
+      width: 100%;
+      height: 420px;
+      background: #dde3ec;
+      overflow: hidden;
+    }
+    .cs-screenshot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    /* Browser chrome overlay */
+    .cs-browser-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 38px;
+      background: rgba(15,23,42,0.88);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      gap: 10px;
+      z-index: 2;
+    }
+    .cs-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .cs-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .cs-dot.r { background: #ff5f57; }
+    .cs-dot.y { background: #febc2e; }
+    .cs-dot.g { background: #28c840; }
+
+    .cs-url-bar {
+      flex: 1;
+      height: 22px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .cs-url-bar i { color: #94a3b8; font-size: 10px; }
+    .cs-url-bar span {
+      font-size: 11px;
+      color: #cbd5e1;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Placeholder when no image */
+    .cs-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--t400);
+    }
+    .cs-placeholder i { font-size: 4rem; opacity: 0.4; }
+    .cs-placeholder span {
+      font-size: 0.85rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Tag on screenshot */
+    .cs-tag {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      z-index: 2;
+    }
+
+    /* ── Details panel ── */
+    .cs-details {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      padding: 2rem 2.2rem;
+      align-items: start;
+    }
+
+    .cs-left {}
+
+    .cs-project-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--t900);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .cs-desc {
+      color: var(--t500);
+      font-size: 0.9rem;
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1.2rem;
+    }
+
+    .cs-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.2rem;
+    }
+
+    .cs-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--t500);
+    }
+    .cs-meta-item i { color: var(--red); font-size: 0.85rem; }
+
+    /* Stats on right */
+    .cs-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-width: 150px;
+      border-left: 1px solid var(--border);
+      padding-left: 2rem;
+    }
+    .cs-stat {}
+    .cs-stat-val {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--red);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1;
+    }
+    .cs-stat-label {
+      font-size: 0.75rem;
+      color: var(--t400);
+      margin-top: 2px;
+    }
+
+    /* ── Navigation controls ── */
+    .cs-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .cs-arrow {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      color: var(--t700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .cs-arrow:hover {
+      background: var(--red);
+      border-color: var(--red);
+      color: #fff;
+      transform: scale(1.07);
+    }
+
+    .cs-counter {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--t500);
+      min-width: 60px;
+      text-align: center;
+      user-select: none;
+    }
+    .cs-counter .cur { color: var(--t900); font-size: 1.1rem; }
+
+    /* ── Progress dots ── */
+    .cs-dots-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .cs-dot-nav {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cs-dot-nav.active {
+      background: var(--red);
+      transform: scale(1.4);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .cs-screenshot { height: 240px; }
+      .cs-details {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        padding: 1.4rem;
+      }
+      .cs-stats {
+        flex-direction: row;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding-left: 0;
+        padding-top: 1.2rem;
+        gap: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<section class="wss-section">
+
+  <!-- Header -->
+  <div class="wss-header">
+    <div class="section-label"><i class="bi bi-trophy-fill"></i> Success Stories</div>
+    <h2 class="section-title">Projects We're <span class="accent">Proud Of</span></h2>
+    <p class="section-sub">Real websites. Real results. A glimpse into what we build for our clients worldwide.</p>
+  </div>
+
+  <!-- Slider -->
+  <div class="cs-slider">
+    <div class="cs-track" id="csTrack">
+
+      <!-- Project 1 -->
+      <div class="cs-slide">
+        <div class="cs-inner">
+          <div class="cs-screenshot">
+            <div class="cs-browser-bar">
+              <div class="cs-dots"><div class="cs-dot r"></div><div class="cs-dot y"></div><div class="cs-dot g"></div></div>
+              <div class="cs-url-bar"><i class="bi bi-lock-fill"></i><span>www.luxehomeinteriors.com</span></div>
+            </div>
+            <div class="cs-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Project Screenshot</span>
+            </div>
+            <span class="cs-tag">WordPress</span>
+          </div>
+          <div class="cs-details">
+            <div class="cs-left">
+              <h3 class="cs-project-name">Luxe Home Interiors</h3>
+              <p class="cs-desc">A premium interior design studio needed a website that matched the elegance of their work. We built a fully custom WordPress theme with a portfolio gallery, online consultation booking, and a mood board generator — cutting their lead response time dramatically.</p>
+              <div class="cs-meta">
+                <div class="cs-meta-item"><i class="bi bi-geo-alt-fill"></i> Dubai, UAE</div>
+                <div class="cs-meta-item"><i class="bi bi-calendar3"></i> 6 Weeks Delivery</div>
+                <div class="cs-meta-item"><i class="bi bi-stack"></i> WordPress · ACF · WooCommerce</div>
+              </div>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat">
+                <div class="cs-stat-val">3×</div>
+                <div class="cs-stat-label">More Inquiries</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">98</div>
+                <div class="cs-stat-label">PageSpeed Score</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">↓62%</div>
+                <div class="cs-stat-label">Bounce Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="cs-slide">
+        <div class="cs-inner">
+          <div class="cs-screenshot">
+            <div class="cs-browser-bar">
+              <div class="cs-dots"><div class="cs-dot r"></div><div class="cs-dot y"></div><div class="cs-dot g"></div></div>
+              <div class="cs-url-bar"><i class="bi bi-lock-fill"></i><span>shop.velvetthread.co</span></div>
+            </div>
+            <div class="cs-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Project Screenshot</span>
+            </div>
+            <span class="cs-tag">Shopify</span>
+          </div>
+          <div class="cs-details">
+            <div class="cs-left">
+              <h3 class="cs-project-name">Velvet Thread Co.</h3>
+              <p class="cs-desc">A boutique fashion brand launching their first online store. We built a fully custom Shopify theme with a lookbook section, size guide configurator, and WhatsApp checkout integration — all optimised for mobile-first shoppers in South Asia.</p>
+              <div class="cs-meta">
+                <div class="cs-meta-item"><i class="bi bi-geo-alt-fill"></i> Karachi, Pakistan</div>
+                <div class="cs-meta-item"><i class="bi bi-calendar3"></i> 4 Weeks Delivery</div>
+                <div class="cs-meta-item"><i class="bi bi-stack"></i> Shopify · Liquid · Klaviyo</div>
+              </div>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat">
+                <div class="cs-stat-val">$84K</div>
+                <div class="cs-stat-label">Month 1 Revenue</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">4.2%</div>
+                <div class="cs-stat-label">Conversion Rate</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">11K</div>
+                <div class="cs-stat-label">Orders in 90 Days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="cs-slide">
+        <div class="cs-inner">
+          <div class="cs-screenshot">
+            <div class="cs-browser-bar">
+              <div class="cs-dots"><div class="cs-dot r"></div><div class="cs-dot y"></div><div class="cs-dot g"></div></div>
+              <div class="cs-url-bar"><i class="bi bi-lock-fill"></i><span>app.finflowdashboard.io</span></div>
+            </div>
+            <div class="cs-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Project Screenshot</span>
+            </div>
+            <span class="cs-tag">Custom UI</span>
+          </div>
+          <div class="cs-details">
+            <div class="cs-left">
+              <h3 class="cs-project-name">FinFlow Dashboard</h3>
+              <p class="cs-desc">A fintech startup needed a data-heavy client dashboard built from scratch. We designed and developed a real-time analytics interface with role-based access, exportable reports, and live chart visualisations — reducing the team's manual reporting workload by over half.</p>
+              <div class="cs-meta">
+                <div class="cs-meta-item"><i class="bi bi-geo-alt-fill"></i> London, UK</div>
+                <div class="cs-meta-item"><i class="bi bi-calendar3"></i> 10 Weeks Delivery</div>
+                <div class="cs-meta-item"><i class="bi bi-stack"></i> React · Node.js · Chart.js</div>
+              </div>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat">
+                <div class="cs-stat-val">↓58%</div>
+                <div class="cs-stat-label">Manual Work Saved</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">12ms</div>
+                <div class="cs-stat-label">Avg. Load Time</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">5★</div>
+                <div class="cs-stat-label">Client Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="cs-slide">
+        <div class="cs-inner">
+          <div class="cs-screenshot">
+            <div class="cs-browser-bar">
+              <div class="cs-dots"><div class="cs-dot r"></div><div class="cs-dot y"></div><div class="cs-dot g"></div></div>
+              <div class="cs-url-bar"><i class="bi bi-lock-fill"></i><span>www.purenestorganic.com</span></div>
+            </div>
+            <div class="cs-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Project Screenshot</span>
+            </div>
+            <span class="cs-tag">eCommerce</span>
+          </div>
+          <div class="cs-details">
+            <div class="cs-left">
+              <h3 class="cs-project-name">PureNest Organics</h3>
+              <p class="cs-desc">An organic skincare brand migrating from a basic template to a fully branded eCommerce experience. We rebuilt their store on WooCommerce with a custom ingredient glossary, skin-type quiz, and a subscription box model — tripling their average order value.</p>
+              <div class="cs-meta">
+                <div class="cs-meta-item"><i class="bi bi-geo-alt-fill"></i> Toronto, Canada</div>
+                <div class="cs-meta-item"><i class="bi bi-calendar3"></i> 8 Weeks Delivery</div>
+                <div class="cs-meta-item"><i class="bi bi-stack"></i> WooCommerce · WordPress · Stripe</div>
+              </div>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat">
+                <div class="cs-stat-val">3×</div>
+                <div class="cs-stat-label">Avg. Order Value</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">40%</div>
+                <div class="cs-stat-label">Returning Customers</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">99</div>
+                <div class="cs-stat-label">PageSpeed Score</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="cs-slide">
+        <div class="cs-inner">
+          <div class="cs-screenshot">
+            <div class="cs-browser-bar">
+              <div class="cs-dots"><div class="cs-dot r"></div><div class="cs-dot y"></div><div class="cs-dot g"></div></div>
+              <div class="cs-url-bar"><i class="bi bi-lock-fill"></i><span>www.arcstudiodesign.com</span></div>
+            </div>
+            <div class="cs-placeholder">
+              <i class="bi bi-image"></i>
+              <span>Project Screenshot</span>
+            </div>
+            <span class="cs-tag">Web Design</span>
+          </div>
+          <div class="cs-details">
+            <div class="cs-left">
+              <h3 class="cs-project-name">Arc Studio Design</h3>
+              <p class="cs-desc">A leading architecture firm wanted their portfolio to feel as ambitious as their buildings. We designed a full-screen immersive portfolio with parallax project showcases, a team spotlight section, and smooth scroll animations — helping them win two international pitches within months of launch.</p>
+              <div class="cs-meta">
+                <div class="cs-meta-item"><i class="bi bi-geo-alt-fill"></i> New York, USA</div>
+                <div class="cs-meta-item"><i class="bi bi-calendar3"></i> 5 Weeks Delivery</div>
+                <div class="cs-meta-item"><i class="bi bi-stack"></i> HTML · GSAP · Webflow</div>
+              </div>
+            </div>
+            <div class="cs-stats">
+              <div class="cs-stat">
+                <div class="cs-stat-val">2</div>
+                <div class="cs-stat-label">Pitches Won</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">5:20</div>
+                <div class="cs-stat-label">Avg. Session Time</div>
+              </div>
+              <div class="cs-stat">
+                <div class="cs-stat-val">↑220%</div>
+                <div class="cs-stat-label">Organic Traffic</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cs-track -->
+  </div><!-- /cs-slider -->
+
+  <!-- Navigation -->
+  <div class="cs-nav">
+    <button class="cs-arrow" id="csPrev" aria-label="Previous">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+
+    <div class="cs-dots-row" id="csDots"></div>
+
+    <div class="cs-counter">
+      <span class="cur" id="csCur">1</span> / <span id="csTotal">5</span>
+    </div>
+
+    <button class="cs-arrow" id="csNext" aria-label="Next">
+      <i class="bi bi-arrow-right"></i>
+    </button>
+  </div>
+
+</section>
+
+<script>
+  const track = document.getElementById('csTrack');
+  const slides = track.querySelectorAll('.cs-slide');
+  const total = slides.length;
+  const dotsContainer = document.getElementById('csDots');
+  const curEl = document.getElementById('csCur');
+  const totalEl = document.getElementById('csTotal');
+  totalEl.textContent = total;
+
+  let current = 0;
+  let isAnimating = false;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'cs-dot-nav' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', () => goTo(i));
+    dotsContainer.appendChild(d);
+  });
+
+  function updateDots() {
+    dotsContainer.querySelectorAll('.cs-dot-nav').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function goTo(index) {
+    if (isAnimating) return;
+    isAnimating = true;
+    current = (index + total) % total;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    curEl.textContent = current + 1;
+    updateDots();
+    setTimeout(() => { isAnimating = false; }, 580);
+  }
+
+  document.getElementById('csNext').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('csPrev').addEventListener('click', () => goTo(current - 1));
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  // Touch / swipe
+  let touchStartX = 0;
+  track.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+
+  // Auto-advance
+  let timer = setInterval(() => goTo(current + 1), 5000);
+  track.addEventListener('mouseenter', () => clearInterval(timer));
+  track.addEventListener('mouseleave', () => { timer = setInterval(() => goTo(current + 1), 5000); });
+</script>
+</body>
+</html>
