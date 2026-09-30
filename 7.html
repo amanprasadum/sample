@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work Showcase – Flickity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.min.css" />
+
+  <style>
+    :root {
+      --wbesy-red:    #c0392b;
+      --wbesy-ink:    0a0a0a;
+      --wbesy-ink:    #0a0a0a;
+      --wbesy-muted:  #888;
+      --wbesy-border: rgba(0,0,0,0.08);
+      --wbesy-bg:     #f5f5f3;
+      --bs-body-font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    body { font-family: var(--bs-body-font-family); background: #e8e8e6; }
+
+    @property --angle { syntax:'<angle>'; initial-value:0deg; inherits:true; }
+    @keyframes wbesy-spin { to { --angle:360deg; } }
+    @keyframes wbesy-glow { 0%,100%{opacity:.28;}50%{opacity:.5;} }
+
+    .wbesy-portfolio-showcase {
+      --ring: conic-gradient(from var(--angle),
+        rgba(192,57,43,0) 0%,rgba(192,57,43,0) 30%,
+        #c0392b 45%,#ff6b57 52%,#ffc2b3 57%,
+        rgba(192,57,43,0) 68%,rgba(192,57,43,0) 100%);
+      position:relative; border-radius:1.5rem;
+      animation:wbesy-spin 6s linear infinite;
+    }
+    .wbesy-portfolio-showcase::before {
+      content:''; position:absolute; inset:-2px; padding:2px;
+      border-radius:calc(1.5rem + 2px); pointer-events:none; z-index:2;
+      background:var(--ring);
+      -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);
+    }
+    .wbesy-portfolio-showcase::after {
+      content:''; position:absolute; inset:-2px; z-index:0; pointer-events:none;
+      border-radius:calc(1.5rem + 2px); background:var(--ring);
+      filter:blur(22px); animation:wbesy-glow 3s ease-in-out infinite;
+    }
+    .wbesy-portfolio-showcase:hover::after { opacity:.6; animation-play-state:paused; }
+    .wbesy-portfolio-inner {
+      position:relative; z-index:1; background:#fff;
+      box-shadow:inset 0 0 0 1px var(--wbesy-border);
+    }
+    @media(prefers-reduced-motion:reduce){
+      .wbesy-portfolio-showcase,.wbesy-portfolio-showcase::after{animation:none;}
+    }
+
+    /* Left panel */
+    .wbesy-portfolio-label { font-size:.63rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--wbesy-red); }
+    .wbesy-portfolio-heading { font-weight:700; line-height:1.15; color:var(--wbesy-ink); }
+    .wbesy-portfolio-heading em { font-style:normal; color:var(--wbesy-red); }
+    .wbesy-portfolio-desc { font-size:.75rem; color:var(--wbesy-muted); line-height:1.9; }
+
+    /* Right panel */
+    .wbesy-portfolio-right {
+      background: var(--wbesy-bg);
+      overflow: hidden;
+    }
+
+    /* Flickity overrides — hide default dots & arrows */
+    .flickity-page-dots { display: none; }
+    .flickity-button    { display: none; }
+    .flickity-viewport  { cursor: grab; }
+    .flickity-viewport:active { cursor: grabbing; }
+    body.wbesy-is-dragging * { cursor: grabbing !important; }
+
+    /* Carousel wrapper padding */
+    .wbesy-portfolio-carousel {
+      padding: 1rem 1.25rem 1.25rem;
+    }
+
+    /* Each slide */
+    .wbesy-portfolio-slide {
+      width: 31%;
+      margin-right: 16px;
+    }
+    @media(max-width:991px){ .wbesy-portfolio-slide { width: 47%; } }
+    @media(max-width:575px){ .wbesy-portfolio-slide { width: 88%; } }
+
+    /* Cards */
+    .wbesy-portfolio-card { height: 100%; }
+    .wbesy-portfolio-card img { height: 190px; object-fit: cover; }
+    .wbesy-portfolio-card .card-title { font-weight:600; font-size:1.05rem; }
+    .wbesy-portfolio-card .card-text {
+      font-size:.72rem; color:var(--wbesy-muted); line-height:1.85;
+      display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+    }
+    .wbesy-portfolio-tag { font-size:.57rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; }
+    .wbesy-portfolio-readmore { font-size:.69rem; font-weight:600; }
+    .wbesy-portfolio-readmore:hover { background:var(--wbesy-ink); border-color:var(--wbesy-ink); color:#fff; }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+
+  <div style="margin-bottom:.75rem;">
+    <span style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;">Flickity — freeScroll + physics momentum</span>
+  </div>
+
+  <section class="wbesy-portfolio-showcase rounded-4">
+    <div class="wbesy-portfolio-inner row g-0 rounded-4 overflow-hidden">
+
+      <!-- LEFT -->
+      <div class="col-lg-3 p-4 pt-lg-5 d-flex flex-column border-end">
+        <div class="wbesy-portfolio-label mb-3">Our Work</div>
+        <h2 class="wbesy-portfolio-heading h2 mb-3">Work We're<br>Proud to <em>Ship</em></h2>
+        <p class="wbesy-portfolio-desc mb-0">Real projects built for real businesses — from pixel-perfect storefronts to complex web apps, each crafted to convert from day one.</p>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="col-lg-9 wbesy-portfolio-right">
+        <div class="wbesy-portfolio-carousel" id="wbesyFlickity">
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://picsum.photos/seed/room101/700/400" class="card-img-top rounded-0" alt="Luxe Home Interiors" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">WordPress</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Luxe Home Interiors</h5><p class="card-text wbesy-portfolio-card-text">A premium interior design studio needed a website as elegant as their work — custom theme, portfolio gallery, online booking, and a mood board generator.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://picsum.photos/seed/cloth202/700/400" class="card-img-top rounded-0" alt="Velvet Thread Co." /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Shopify</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Velvet Thread Co.</h5><p class="card-text wbesy-portfolio-card-text">A boutique fashion brand's first online store — custom Shopify theme with lookbook, size guide configurator, and WhatsApp checkout for South Asian shoppers.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://picsum.photos/seed/data303/700/400" class="card-img-top rounded-0" alt="FinFlow Analytics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Custom UI</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">FinFlow Analytics</h5><p class="card-text wbesy-portfolio-card-text">A fintech startup's data-heavy client portal — real-time charts, role-based access, and exportable reports that cut manual reporting workload in half.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://picsum.photos/seed/skin404/700/400" class="card-img-top rounded-0" alt="PureNest Organics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">eCommerce</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">PureNest Organics</h5><p class="card-text wbesy-portfolio-card-text">An organic skincare brand moved from a basic template to a fully branded store — ingredient glossary, skin-type quiz, and subscription model.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://picsum.photos/seed/build505/700/400" class="card-img-top rounded-0" alt="Arc Studio Design" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Web Design</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Arc Studio Design</h5><p class="card-text wbesy-portfolio-card-text">An architecture firm's portfolio built for impact — full-screen immersive layout, parallax showcases, and scroll transitions that won them 2 international pitches.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js"></script>
+<script>
+  var flkty = new Flickity('#wbesyFlickity', {
+    freeScroll: true,           // momentum / inertia ON
+    freeScrollFriction: 0.045,  // lower = longer glide (0.01–0.1)
+    wrapAround: true,           // infinite loop
+    contain: true,
+    prevNextButtons: false,
+    pageDots: false,
+    autoPlay: 3000,
+    pauseAutoPlayOnHover: true,
+  });
+
+  flkty.on('dragStart', function(){ document.body.classList.add('wbesy-is-dragging'); });
+  flkty.on('dragEnd',   function(){ document.body.classList.remove('wbesy-is-dragging'); });
+</script>
+</body>
+</html>
