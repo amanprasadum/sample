@@ -54,31 +54,26 @@
       .wbesy-portfolio-showcase,.wbesy-portfolio-showcase::after{animation:none;}
     }
 
-    /* Left panel */
     .wbesy-portfolio-label { font-size:.63rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--wbesy-red); }
     .wbesy-portfolio-heading { font-weight:700; line-height:1.15; color:var(--wbesy-ink); }
     .wbesy-portfolio-heading em { font-style:normal; color:var(--wbesy-red); }
     .wbesy-portfolio-desc { font-size:.75rem; color:var(--wbesy-muted); line-height:1.9; }
 
-    /* Right panel */
     .wbesy-portfolio-right {
       background: var(--wbesy-bg);
       overflow: hidden;
     }
 
-    /* Flickity overrides — hide default dots & arrows */
     .flickity-page-dots { display: none; }
     .flickity-button    { display: none; }
     .flickity-viewport  { cursor: grab; }
     .flickity-viewport:active { cursor: grabbing; }
     body.wbesy-is-dragging * { cursor: grabbing !important; }
 
-    /* Carousel wrapper padding */
     .wbesy-portfolio-carousel {
       padding: 1rem 1.25rem 1.25rem;
     }
 
-    /* Each slide */
     .wbesy-portfolio-slide {
       width: 31%;
       margin-right: 16px;
@@ -86,7 +81,6 @@
     @media(max-width:991px){ .wbesy-portfolio-slide { width: 47%; } }
     @media(max-width:575px){ .wbesy-portfolio-slide { width: 88%; } }
 
-    /* Cards */
     .wbesy-portfolio-card { height: 100%; }
     .wbesy-portfolio-card img { height: 190px; object-fit: cover; }
     .wbesy-portfolio-card .card-title { font-weight:600; font-size:1.05rem; }
@@ -104,7 +98,7 @@
 <div class="container py-5">
 
   <div style="margin-bottom:.75rem;">
-    <span style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;">Flickity javascript</span>
+    <span style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#888;">Our Portfolio</span>
   </div>
 
   <section class="wbesy-portfolio-showcase rounded-4">
@@ -114,7 +108,7 @@
       <div class="col-lg-3 p-4 pt-lg-5 d-flex flex-column border-end">
         <div class="wbesy-portfolio-label mb-3">Our Work</div>
         <h2 class="wbesy-portfolio-heading h2 mb-3">Work We're<br>Proud to <em>Ship</em></h2>
-        <p class="wbesy-portfolio-desc mb-0">Real projects built for real businesses — from pixel-perfect storefronts to complex web apps, each crafted to convert from day one.</p>
+        <p class="wbesy-portfolio-desc mb-0">Real websites built for real businesses — from construction and professional services to exports, agriculture, and digital marketing.</p>
       </div>
 
       <!-- RIGHT -->
@@ -123,36 +117,50 @@
 
           <div class="wbesy-portfolio-slide">
             <div class="card wbesy-portfolio-card border rounded-0 w-100">
-              <div class="position-relative"><img src="https://picsum.photos/seed/room101/700/400" class="card-img-top rounded-0" alt="Luxe Home Interiors" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">WordPress</span></div>
-              <div class="card-body d-flex flex-column"><h5 class="card-title">Luxe Home Interiors</h5><p class="card-text wbesy-portfolio-card-text">A premium interior design studio needed a website as elegant as their work — custom theme, portfolio gallery, online booking, and a mood board generator.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              <div class="position-relative"><img src="https://epicloftconversion.co.uk/" class="card-img-top rounded-0" alt="EPIC Loft Conversion" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Construction</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">EPIC Loft Conversion</h5><p class="card-text wbesy-portfolio-card-text">A London-based loft conversion and roofing company offering custom loft transformations, including dormer, mansard, roof light, hip-to-gable, and modular conversions.</p><a href="https://epicloftconversion.co.uk/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
             </div>
           </div>
 
           <div class="wbesy-portfolio-slide">
             <div class="card wbesy-portfolio-card border rounded-0 w-100">
-              <div class="position-relative"><img src="https://picsum.photos/seed/cloth202/700/400" class="card-img-top rounded-0" alt="Velvet Thread Co." /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Shopify</span></div>
-              <div class="card-body d-flex flex-column"><h5 class="card-title">Velvet Thread Co.</h5><p class="card-text wbesy-portfolio-card-text">A boutique fashion brand's first online store — custom Shopify theme with lookbook, size guide configurator, and WhatsApp checkout for South Asian shoppers.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              <div class="position-relative"><img src="https://thecaulkingguy.com.au/" class="card-img-top rounded-0" alt="The Caulking Guy" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Services</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">The Caulking Guy</h5><p class="card-text wbesy-portfolio-card-text">A Sydney-based professional caulking and sealing service providing residential, commercial, fire caulking, external sealing, internal sealing, and remedial caulking solutions.</p><a href="https://thecaulkingguy.com.au/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
             </div>
           </div>
 
           <div class="wbesy-portfolio-slide">
             <div class="card wbesy-portfolio-card border rounded-0 w-100">
-              <div class="position-relative"><img src="https://picsum.photos/seed/data303/700/400" class="card-img-top rounded-0" alt="FinFlow Analytics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Custom UI</span></div>
-              <div class="card-body d-flex flex-column"><h5 class="card-title">FinFlow Analytics</h5><p class="card-text wbesy-portfolio-card-text">A fintech startup's data-heavy client portal — real-time charts, role-based access, and exportable reports that cut manual reporting workload in half.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              <div class="position-relative"><img src="https://www.malaxmiexport.com/" class="card-img-top rounded-0" alt="Maa Laxmi Enterprise" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Export</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Maa Laxmi Enterprise</h5><p class="card-text wbesy-portfolio-card-text">An Indian export business supplying premium Basmati and Non-Basmati rice along with high-quality polyester yarn to customers in global markets.</p><a href="https://www.malaxmiexport.com/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
             </div>
           </div>
 
           <div class="wbesy-portfolio-slide">
             <div class="card wbesy-portfolio-card border rounded-0 w-100">
-              <div class="position-relative"><img src="https://picsum.photos/seed/skin404/700/400" class="card-img-top rounded-0" alt="PureNest Organics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">eCommerce</span></div>
-              <div class="card-body d-flex flex-column"><h5 class="card-title">PureNest Organics</h5><p class="card-text wbesy-portfolio-card-text">An organic skincare brand moved from a basic template to a fully branded store — ingredient glossary, skin-type quiz, and subscription model.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              <div class="position-relative"><img src="https://pavitramitti.co.in/" class="card-img-top rounded-0" alt="Pavitra Mitti" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Nursery</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Pavitra Mitti</h5><p class="card-text wbesy-portfolio-card-text">A plant nursery website showcasing plants and gardening-related products and services for customers in the Kolkata and West Bengal region.</p><a href="https://pavitramitti.co.in/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
             </div>
           </div>
 
           <div class="wbesy-portfolio-slide">
             <div class="card wbesy-portfolio-card border rounded-0 w-100">
-              <div class="position-relative"><img src="https://picsum.photos/seed/build505/700/400" class="card-img-top rounded-0" alt="Arc Studio Design" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Web Design</span></div>
-              <div class="card-body d-flex flex-column"><h5 class="card-title">Arc Studio Design</h5><p class="card-text wbesy-portfolio-card-text">An architecture firm's portfolio built for impact — full-screen immersive layout, parallax showcases, and scroll transitions that won them 2 international pitches.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              <div class="position-relative"><img src="https://inspiringgroup.in/" class="card-img-top rounded-0" alt="Inspiring Group" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Business Group</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">Inspiring Group</h5><p class="card-text wbesy-portfolio-card-text">A diversified Indian business group working across agriculture, engineering and construction, healthcare, and social development.</p><a href="https://inspiringgroup.in/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="https://www.dsmcityconstructionltd.co.uk/" class="card-img-top rounded-0" alt="DSM City Construction" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Construction</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">DSM City Construction</h5><p class="card-text wbesy-portfolio-card-text">A Dagenham-based construction company providing building, renovation, roofing, tiling, painting, loft conversion, and other home improvement services across East London.</p><a href="https://www.dsmcityconstructionltd.co.uk/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
+            </div>
+          </div>
+
+          <div class="wbesy-portfolio-slide">
+            <div class="card wbesy-portfolio-card border rounded-0 w-100">
+              <div class="position-relative"><img src="http://searchpilotseo.com/" class="card-img-top rounded-0" alt="SearchPilot SEO" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">SEO</span></div>
+              <div class="card-body d-flex flex-column"><h5 class="card-title">SearchPilot SEO</h5><p class="card-text wbesy-portfolio-card-text">A Kolkata-based SEO consultancy helping businesses improve organic visibility, search rankings, website traffic, and lead generation through search strategies and optimization.</p><a href="http://searchpilotseo.com/" target="_blank" rel="noopener" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Visit Website &rarr;</a></div>
             </div>
           </div>
 
@@ -166,9 +174,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/3.0.0/flickity.pkgd.min.js"></script>
 <script>
   var flkty = new Flickity('#wbesyFlickity', {
-    freeScroll: true,           // momentum / inertia ON
-    freeScrollFriction: 0.045,  // lower = longer glide (0.01–0.1)
-    wrapAround: true,           // infinite loop
+    freeScroll: true,
+    freeScrollFriction: 0.045,
+    wrapAround: true,
     contain: true,
     prevNextButtons: false,
     pageDots: false,
