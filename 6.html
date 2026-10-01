@@ -68,14 +68,16 @@
     .wbesy-portfolio-right:active {
       cursor: grabbing;
     }
-    /* while owl is dragging, body gets this class */
+    /* while the slider is being dragged, body gets this class */
     body.wbesy-is-dragging * {
       cursor: grabbing !important;
     }
 
     /* Cards */
-    .owl-stage { display:flex; }
-    .owl-item  { display:flex; }
+    .wbesy-swiper { overflow:hidden; }
+    .wbesy-swiper .swiper-wrapper { align-items:stretch; transition-timing-function:linear !important; }
+    .wbesy-swiper .swiper-slide { height:auto; display:flex; }
+    .wbesy-portfolio-card { width:100%; }
     .wbesy-portfolio-card img { height:190px; object-fit:cover; }
     .wbesy-portfolio-card .card-title { font-weight:600; font-size:1.05rem; }
     .wbesy-portfolio-card .card-text {
@@ -105,31 +107,42 @@
         <div class="swiper wbesy-swiper" id="wbesyCarouselDrag">
           <div class="swiper-wrapper">
 
-          <div class="swiper-slide"><div class="card wbesy-portfolio-card h-100 border rounded-0 w-100">
-            <div class="position-relative"><img src="https://picsum.photos/seed/room101/700/400" class="card-img-top rounded-0" alt="Luxe Home Interiors" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">WordPress</span></div>
-            <div class="card-body d-flex flex-column"><h5 class="card-title">Luxe Home Interiors</h5><p class="card-text wbesy-portfolio-card-text">A premium interior design studio needed a website as elegant as their work — custom theme, portfolio gallery, online booking, and a mood board generator.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
-          </div>
+            <div class="swiper-slide">
+              <div class="card wbesy-portfolio-card h-100 border rounded-0">
+                <div class="position-relative"><img src="https://picsum.photos/seed/room101/700/400" class="card-img-top rounded-0" alt="Luxe Home Interiors" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">WordPress</span></div>
+                <div class="card-body d-flex flex-column"><h5 class="card-title">Luxe Home Interiors</h5><p class="card-text wbesy-portfolio-card-text">A premium interior design studio needed a website as elegant as their work — custom theme, portfolio gallery, online booking, and a mood board generator.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              </div>
+            </div>
 
-          <div class="card wbesy-portfolio-card h-100 border rounded-0 w-100">
-            <div class="position-relative"><img src="https://picsum.photos/seed/cloth202/700/400" class="card-img-top rounded-0" alt="Velvet Thread Co." /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Shopify</span></div>
-            <div class="card-body d-flex flex-column"><h5 class="card-title">Velvet Thread Co.</h5><p class="card-text wbesy-portfolio-card-text">A boutique fashion brand's first online store — custom Shopify theme with lookbook, size guide configurator, and WhatsApp checkout for South Asian shoppers.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
-          </div>
+            <div class="swiper-slide">
+              <div class="card wbesy-portfolio-card h-100 border rounded-0">
+                <div class="position-relative"><img src="https://picsum.photos/seed/cloth202/700/400" class="card-img-top rounded-0" alt="Velvet Thread Co." /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Shopify</span></div>
+                <div class="card-body d-flex flex-column"><h5 class="card-title">Velvet Thread Co.</h5><p class="card-text wbesy-portfolio-card-text">A boutique fashion brand's first online store — custom Shopify theme with lookbook, size guide configurator, and WhatsApp checkout for South Asian shoppers.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              </div>
+            </div>
 
-          <div class="card wbesy-portfolio-card h-100 border rounded-0 w-100">
-            <div class="position-relative"><img src="https://picsum.photos/seed/data303/700/400" class="card-img-top rounded-0" alt="FinFlow Analytics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Custom UI</span></div>
-            <div class="card-body d-flex flex-column"><h5 class="card-title">FinFlow Analytics</h5><p class="card-text wbesy-portfolio-card-text">A fintech startup's data-heavy client portal — real-time charts, role-based access, and exportable reports that cut manual reporting workload in half.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
-          </div>
+            <div class="swiper-slide">
+              <div class="card wbesy-portfolio-card h-100 border rounded-0">
+                <div class="position-relative"><img src="https://picsum.photos/seed/data303/700/400" class="card-img-top rounded-0" alt="FinFlow Analytics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Custom UI</span></div>
+                <div class="card-body d-flex flex-column"><h5 class="card-title">FinFlow Analytics</h5><p class="card-text wbesy-portfolio-card-text">A fintech startup's data-heavy client portal — real-time charts, role-based access, and exportable reports that cut manual reporting workload in half.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              </div>
+            </div>
 
-          <div class="card wbesy-portfolio-card h-100 border rounded-0 w-100">
-            <div class="position-relative"><img src="https://picsum.photos/seed/skin404/700/400" class="card-img-top rounded-0" alt="PureNest Organics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">eCommerce</span></div>
-            <div class="card-body d-flex flex-column"><h5 class="card-title">PureNest Organics</h5><p class="card-text wbesy-portfolio-card-text">An organic skincare brand moved from a basic template to a fully branded store — ingredient glossary, skin-type quiz, and subscription model.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
-          </div>
+            <div class="swiper-slide">
+              <div class="card wbesy-portfolio-card h-100 border rounded-0">
+                <div class="position-relative"><img src="https://picsum.photos/seed/skin404/700/400" class="card-img-top rounded-0" alt="PureNest Organics" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">eCommerce</span></div>
+                <div class="card-body d-flex flex-column"><h5 class="card-title">PureNest Organics</h5><p class="card-text wbesy-portfolio-card-text">An organic skincare brand moved from a basic template to a fully branded store — ingredient glossary, skin-type quiz, and subscription model.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              </div>
+            </div>
 
-          <div class="card wbesy-portfolio-card h-100 border rounded-0 w-100">
-            <div class="position-relative"><img src="https://picsum.photos/seed/build505/700/400" class="card-img-top rounded-0" alt="Arc Studio Design" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Web Design</span></div>
-            <div class="card-body d-flex flex-column"><h5 class="card-title">Arc Studio Design</h5><p class="card-text wbesy-portfolio-card-text">An architecture firm's portfolio built for impact — full-screen immersive layout, parallax showcases, and scroll transitions that won them 2 international pitches.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
-          </div>
+            <div class="swiper-slide">
+              <div class="card wbesy-portfolio-card h-100 border rounded-0">
+                <div class="position-relative"><img src="https://picsum.photos/seed/build505/700/400" class="card-img-top rounded-0" alt="Arc Studio Design" /><span class="badge bg-white text-dark wbesy-portfolio-tag position-absolute top-0 start-0 m-3">Web Design</span></div>
+                <div class="card-body d-flex flex-column"><h5 class="card-title">Arc Studio Design</h5><p class="card-text wbesy-portfolio-card-text">An architecture firm's portfolio built for impact — full-screen immersive layout, parallax showcases, and scroll transitions that won them 2 international pitches.</p><a href="#" class="btn btn-sm btn-outline-dark wbesy-portfolio-readmore mt-auto align-self-start">Read More &rarr;</a></div>
+              </div>
+            </div>
 
+          </div>
         </div>
       </div>
 
@@ -137,21 +150,29 @@
   </section>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-$(function(){
-  $('#wbesyCarouselDrag').owlCarousel({
-    loop: true, slideBy: 1, margin: 16,
-    nav: false, dots: false,
-    autoplay: true, autoplayTimeout: 3000,
-    autoplayHoverPause: true, smartSpeed: 700,
-    mouseDrag: true, touchDrag: true,
-    responsive: { 0:{items:1}, 576:{items:2}, 992:{items:3} },
-    onDrag: function(){ $('body').addClass('wbesy-is-dragging'); },
-    onDragged: function(){ $('body').removeClass('wbesy-is-dragging'); }
+  new Swiper('#wbesyCarouselDrag', {
+    loop: true,
+    slidesPerView: 1,
+    spaceBetween: 16,
+    speed: 5000,
+    allowTouchMove: true,
+    grabCursor: true,
+    autoplay: {
+      delay: 0,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: false
+    },
+    breakpoints: {
+      576: { slidesPerView: 2 },
+      992: { slidesPerView: 3 }
+    },
+    on: {
+      touchStart: function(){ document.body.classList.add('wbesy-is-dragging'); },
+      touchEnd: function(){ document.body.classList.remove('wbesy-is-dragging'); }
+    }
   });
-});
 </script>
 </body>
 </html>
