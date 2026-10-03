@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>codexaman | Software, Apps & Websites</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { brand: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d' } },
+    keyframes: { marquee:{from:{transform:'translateX(0)'},to:{transform:'translateX(-50%)'}}, float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-14px)'}}, bar:{from:{transform:'scaleY(.3)'},to:{transform:'scaleY(1)'}} },
+    animation: { marquee:'marquee 28s linear infinite', float:'float 6s ease-in-out infinite', bar:'bar .8s ease-in-out infinite alternate' }
+  } } }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+<style>
+  .swiper{position:relative;overflow:hidden;width:100%;height:100%}
+  .swiper-wrapper{display:flex;width:100%;height:100%;transition-property:transform}
+  .swiper-slide{flex-shrink:0;width:100%;height:100%;position:relative}
+  .swiper-pagination{position:absolute;bottom:24px;left:0;right:0;text-align:center;z-index:10}
+  .swiper-pagination-bullet{display:inline-block;width:8px;height:8px;border-radius:99px;background:rgba(0,0,0,.25);margin:0 4px;cursor:pointer;transition:all .3s}
+  .swiper-pagination-bullet-active{background:#16a34a;width:28px}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .split-word{display:inline-block;opacity:0;transform:translateY(60%);animation:wordUp .9s cubic-bezier(.2,.7,.2,1) forwards}
+  @keyframes wordUp{to{opacity:1;transform:none}}
+
+  .tilt{transition:transform .4s ease,box-shadow .4s ease}
+  .tilt:hover{transform:translateY(-6px);box-shadow:0 30px 60px -30px rgba(0,0,0,.35)}
+  .spot{position:relative;overflow:hidden}
+  .spot::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--x,50%) var(--y,50%),rgba(34,197,94,.22),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+  .spot:hover::before{opacity:1}
+  .spot>*{position:relative}
+  .grad{background:linear-gradient(110deg,#16a34a 20%,#86efac 45%,#16a34a 70%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+  @keyframes shine{from{background-position:200% 0}to{background-position:-200% 0}}
+  .noise::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(0,0,0,.06) 1px,transparent 1px);background-size:6px 6px;pointer-events:none}
+
+  .acc{display:flex;gap:14px;height:520px}
+  .acc-panel{flex:1;position:relative;border-radius:32px;overflow:hidden;cursor:pointer;transition:flex .8s cubic-bezier(.6,0,.2,1);min-width:0}
+  .acc-panel.active{flex:5}
+  .acc-panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .acc-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.05) 60%)}
+  .acc-panel .vert{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-weight:600;color:#fff;z-index:2;transition:opacity .3s}
+  .acc-panel.active .vert{opacity:0}
+  .acc-panel .label{position:absolute;left:0;right:0;bottom:0;padding:28px;color:#fff;z-index:2;opacity:0;transition:opacity .5s .25s}
+  .acc-panel.active .label{opacity:1}
+
+  .playing .bar{animation:bar .8s ease-in-out infinite alternate}
+  .bar{transform-origin:bottom}
+
+  .stack-card{position:sticky;box-shadow:0 -12px 40px -20px rgba(0,0,0,.3)}
+  details summary{list-style:none;cursor:pointer}
+  details summary::-webkit-details-marker{display:none}
+  details[open] .chev{transform:rotate(180deg)}
+  [data-lucide]{width:20px;height:20px}
+  #progressBar{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#16a34a,#4ade80);z-index:100}
+  #cursorGlow{position:fixed;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,.18),transparent 60%);pointer-events:none;z-index:1;transition:opacity .3s}
+  @media (hover:none){#cursorGlow{display:none}}
+  .mesh{position:absolute;inset:-20%;background:radial-gradient(40% 40% at 20% 30%,rgba(34,197,94,.35),transparent 70%),radial-gradient(35% 35% at 80% 20%,rgba(134,239,172,.35),transparent 70%),radial-gradient(40% 40% at 60% 90%,rgba(22,163,74,.25),transparent 70%);filter:blur(40px);animation:meshMove 14s ease-in-out infinite alternate;pointer-events:none}
+  @keyframes meshMove{to{transform:translate(4%,-3%) scale(1.08)}}
+  .t-pag .swiper-pagination-bullet{background:rgba(0,0,0,.25)}
+  details.faq summary{list-style:none}
+  details.faq summary::-webkit-details-marker{display:none}
+  details.faq[open] .plus{transform:rotate(45deg)}
+</style>
+</head>
+<body class="bg-white text-neutral-900 antialiased overflow-x-hidden">
+<div id="progressBar"></div>
+<div id="cursorGlow"></div>
+
+<!-- NAV -->
+<header class="fixed top-4 inset-x-0 z-50 px-4">
+  <nav class="max-w-6xl mx-auto h-16 pl-5 pr-2 flex items-center justify-between rounded-full bg-white/80 backdrop-blur-xl border border-black/10 shadow-lg shadow-black/5">
+    <a href="#" class="flex items-center gap-2 font-bold text-lg">
+      <span class="grid place-items-center w-9 h-9 rounded-full bg-brand-500 text-black"><i data-lucide="code-2" class="w-4 h-4"></i></span>codexaman
+    </a>
+    <ul class="hidden lg:flex items-center gap-7 text-sm font-medium text-neutral-700">
+      <li class="group static">
+        <button class="flex items-center gap-1 py-5 hover:text-black">Services <i data-lucide="chevron-down" class="w-4 h-4 transition group-hover:rotate-180"></i></button>
+        <div class="hidden group-hover:block fixed inset-x-0 top-24 px-4">
+          <div class="max-w-6xl mx-auto bg-white rounded-[2rem] border border-black/10 shadow-2xl p-8 grid grid-cols-12 gap-6">
+            <div class="col-span-3 space-y-1">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-3">Build</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="globe" class="text-brand-600"></i><span><b class="block">Websites</b><span class="text-xs text-neutral-500">React, WordPress, Laravel</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="smartphone" class="text-brand-600"></i><span><b class="block">Mobile Apps</b><span class="text-xs text-neutral-500">Flutter &amp; React Native</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="shopping-bag" class="text-brand-600"></i><span><b class="block">E-commerce</b><span class="text-xs text-neutral-500">Shopify &amp; WooCommerce</span></span></a>
+            </div>
+            <div class="col-span-3 space-y-1">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-3">Get found</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="search" class="text-brand-600"></i><span><b class="block">Local SEO</b><span class="text-xs text-neutral-500">Rank for city searches</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="map-pin" class="text-brand-600"></i><span><b class="block">Google My Business</b><span class="text-xs text-neutral-500">Verified &amp; optimized</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="share-2" class="text-brand-600"></i><span><b class="block">Social Setup</b><span class="text-xs text-neutral-500">Instagram, Facebook, LinkedIn</span></span></a>
+            </div>
+            <div class="col-span-2 space-y-1">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-3">Brand</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="pen-tool" class="text-brand-600"></i><span><b class="block">Logo &amp; Identity</b><span class="text-xs text-neutral-500">Matches your business</span></span></a>
+              <a href="#stack" class="flex gap-3 p-3 rounded-2xl hover:bg-brand-50"><i data-lucide="layers" class="text-brand-600"></i><span><b class="block">Our Stack</b><span class="text-xs text-neutral-500">Tools we build with</span></span></a>
+            </div>
+            <div class="col-span-4 relative rounded-3xl overflow-hidden bg-black text-white min-h-[260px]">
+              <img src="https://picsum.photos/seed/codexmega/800/600" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50" />
+              <div class="relative h-full p-7 flex flex-col justify-end">
+                <p class="text-brand-400 text-sm font-semibold">Free, no-obligation</p>
+                <p class="text-2xl font-bold mt-1">Get a free project estimate</p>
+                <a href="#contact" class="mt-4 w-fit inline-flex items-center gap-2 bg-brand-500 text-black rounded-full px-5 py-2.5 font-semibold">Start a project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="#showcase" class="hover:text-black">Work</a></li>
+      <li><a href="#process" class="hover:text-black">Process</a></li>
+      <li><a href="#stack" class="hover:text-black">Stack</a></li>
+      <li><a href="#pricing" class="hover:text-black">Pricing</a></li>
+    </ul>
+    <div class="flex items-center gap-2">
+      <a href="#contact" class="hidden sm:inline-flex bg-black text-white text-sm font-semibold rounded-full px-5 py-2.5 hover:bg-brand-600 transition">Get free quote</a>
+      <button id="menuBtn" class="lg:hidden w-11 h-11 grid place-items-center rounded-full bg-black text-white" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+  <div id="drawer" class="hidden lg:hidden mt-3 max-w-6xl mx-auto bg-white rounded-3xl border border-black/10 shadow-xl p-5 max-h-[75vh] overflow-y-auto">
+    <details class="border-b border-black/5 py-3">
+      <summary class="flex justify-between items-center font-semibold">Services <i data-lucide="chevron-down" class="chev w-5 h-5 transition"></i></summary>
+      <div class="mt-3 space-y-2">
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="globe" class="text-brand-600 w-5 h-5"></i>Websites</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="smartphone" class="text-brand-600 w-5 h-5"></i>Mobile Apps</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="shopping-bag" class="text-brand-600 w-5 h-5"></i>E-commerce</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="search" class="text-brand-600 w-5 h-5"></i>Local SEO</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="map-pin" class="text-brand-600 w-5 h-5"></i>Google My Business</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="pen-tool" class="text-brand-600 w-5 h-5"></i>Logo &amp; Branding</a>
+      </div>
+    </details>
+    <a href="#showcase" class="block py-3 border-b border-black/5 font-semibold">Work</a>
+    <a href="#process" class="block py-3 border-b border-black/5 font-semibold">Process</a>
+    <a href="#stack" class="block py-3 border-b border-black/5 font-semibold">Stack</a>
+    <a href="#pricing" class="block py-3 font-semibold">Pricing</a>
+    <a href="#contact" class="block mt-3 text-center bg-black text-white rounded-full py-3 font-semibold">Get free quote</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative pt-40 pb-20 px-6 noise overflow-hidden">
+  <div class="mesh"></div>
+  <div class="relative max-w-6xl mx-auto">
+    <span class="reveal inline-flex items-center gap-2 rounded-full bg-black text-white px-4 py-1.5 text-sm font-medium">
+      <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-brand-400"></span></span>
+      Open for new projects
+    </span>
+    <h1 class="mt-8 text-6xl md:text-8xl font-bold tracking-tighter leading-[0.95]">
+      Software that <span class="grad">builds growth.</span>
+    </h1>
+    <div class="mt-10 grid lg:grid-cols-12 gap-10 items-end">
+      <div class="lg:col-span-5">
+        <p class="text-lg text-neutral-600 leading-relaxed">A software team that builds for MERN stacks, apps &amp; the web. Websites, apps, stores and local visibility, from Kolkata, India, for businesses across the globe.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#contact" class="bg-black text-white rounded-full px-7 py-4 font-semibold hover:bg-brand-600 transition inline-flex items-center gap-2">Get free quote <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+          <a href="#pricing" class="rounded-full px-7 py-4 font-semibold border border-black/15 hover:border-black transition">See pricing</a>
+        </div>
+      </div>
+      <div class="lg:col-span-7 grid grid-cols-3 gap-4">
+        <div class="col-span-2 h-72 rounded-[2rem] overflow-hidden relative"><img src="https://picsum.photos/seed/codexhero1/900/700" alt="" class="absolute inset-0 w-full h-full object-cover" /></div>
+        <div class="flex flex-col gap-4">
+          <div class="h-32 rounded-[2rem] overflow-hidden relative"><img src="https://picsum.photos/seed/codexhero2/400/400" alt="" class="absolute inset-0 w-full h-full object-cover" /></div>
+          <div class="h-32 rounded-[2rem] bg-brand-500 p-5 flex flex-col justify-between"><i data-lucide="arrow-up-right" class="text-black"></i><p class="font-bold text-3xl text-black">50+</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="bg-black text-white py-6 overflow-hidden -rotate-1 scale-105">
+  <div class="flex w-max animate-marquee gap-10 text-3xl font-bold tracking-tight whitespace-nowrap">
+    <span>WordPress</span><span class="text-brand-400">●</span><span>React</span><span class="text-brand-400">●</span><span>Laravel</span><span class="text-brand-400">●</span><span>Shopify</span><span class="text-brand-400">●</span><span>Flutter</span><span class="text-brand-400">●</span><span>Local SEO</span><span class="text-brand-400">●</span><span>Logo Design</span><span class="text-brand-400">●</span>
+    <span>WordPress</span><span class="text-brand-400">●</span><span>React</span><span class="text-brand-400">●</span><span>Laravel</span><span class="text-brand-400">●</span><span>Shopify</span><span class="text-brand-400">●</span><span>Flutter</span><span class="text-brand-400">●</span><span>Local SEO</span><span class="text-brand-400">●</span><span>Logo Design</span><span class="text-brand-400">●</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="max-w-6xl mx-auto px-6 py-24 grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="reveal spot tilt rounded-[2rem] bg-neutral-100 p-8" onmousemove="spotMove(event,this)"><p class="text-6xl font-bold tracking-tighter"><span class="counter" data-to="50">0</span>+</p><p class="text-neutral-500 mt-3 text-sm">Projects delivered</p></div>
+  <div class="reveal spot tilt rounded-[2rem] bg-neutral-100 p-8" onmousemove="spotMove(event,this)"><p class="text-6xl font-bold tracking-tighter">3–7</p><p class="text-neutral-500 mt-3 text-sm">Day avg. delivery</p></div>
+  <div class="reveal spot tilt rounded-[2rem] bg-brand-500 p-8" onmousemove="spotMove(event,this)"><p class="text-6xl font-bold tracking-tighter"><span class="counter" data-to="100">0</span>%</p><p class="text-black/70 mt-3 text-sm">On-time rate</p></div>
+  <div class="reveal spot tilt rounded-[2rem] bg-black text-white p-8" onmousemove="spotMove(event,this)"><p class="text-6xl font-bold tracking-tighter">Global</p><p class="text-neutral-400 mt-3 text-sm">Client base</p></div>
+</section>
+
+<!-- BENTO SERVICES -->
+<section id="services" class="max-w-6xl mx-auto px-6 pb-28">
+  <div class="reveal flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+    <h2 class="text-5xl md:text-7xl font-bold tracking-tighter leading-[0.95] max-w-3xl">Everything your business needs to <span class="grad">show up online.</span></h2>
+    <p class="text-neutral-600 max-w-sm">From your first website to showing up on Google Maps. One team handles the build and the visibility.</p>
+  </div>
+  <div class="grid md:grid-cols-6 gap-4">
+    <div class="reveal tilt md:col-span-4 rounded-[2rem] bg-black text-white p-10 min-h-[300px] flex flex-col justify-between"><i data-lucide="globe" class="text-brand-400 w-10 h-10"></i><div><h3 class="text-3xl font-bold">Website Development</h3><p class="mt-3 text-neutral-400 max-w-md">React, WordPress, Laravel, HTML/CSS &amp; Bootstrap, built clean and fast.</p></div></div>
+    <div class="reveal tilt md:col-span-2 rounded-[2rem] bg-brand-500 p-10 flex flex-col justify-between"><i data-lucide="smartphone" class="w-10 h-10"></i><div><h3 class="text-2xl font-bold">Mobile Apps</h3><p class="mt-2 text-sm">Flutter &amp; React Native for Android and iOS from one codebase.</p></div></div>
+    <div class="reveal tilt md:col-span-2 rounded-[2rem] bg-neutral-100 p-8"><i data-lucide="shopping-bag" class="text-brand-600 w-8 h-8"></i><h3 class="font-bold text-xl mt-8">E-commerce Stores</h3><p class="mt-2 text-sm text-neutral-600">Shopify &amp; WooCommerce stores ready to take payments from day one.</p></div>
+    <div class="reveal tilt md:col-span-2 rounded-[2rem] bg-neutral-100 p-8"><i data-lucide="pen-tool" class="text-brand-600 w-8 h-8"></i><h3 class="font-bold text-xl mt-8">Logo &amp; Brand</h3><p class="mt-2 text-sm text-neutral-600">A visual identity that matches how your business looks everywhere.</p></div>
+    <div class="reveal tilt md:col-span-2 rounded-[2rem] border border-black/10 p-8"><i data-lucide="map-pin" class="text-brand-600 w-8 h-8"></i><h3 class="font-bold text-xl mt-8">Google My Business</h3><p class="mt-2 text-sm text-neutral-600">A verified, optimized profile so people find you on Search and Maps.</p></div>
+    <div class="reveal tilt md:col-span-3 rounded-[2rem] border border-black/10 p-8"><i data-lucide="search" class="text-brand-600 w-8 h-8"></i><h3 class="font-bold text-xl mt-8">Local SEO</h3><p class="mt-2 text-sm text-neutral-600">Ranking your website and profile for the searches people in your city actually make.</p></div>
+    <div class="reveal tilt md:col-span-3 rounded-[2rem] border border-black/10 p-8 flex gap-6 items-start"><i data-lucide="share-2" class="text-brand-600 w-8 h-8 shrink-0"></i><div><h3 class="font-bold text-xl">Social &amp; Maps</h3><p class="mt-2 text-sm text-neutral-600">Google Maps integration plus Instagram, Facebook and LinkedIn profiles, all branded to match.</p></div></div>
+  </div>
+</section>
+
+<!-- HERO SWIPER (case highlights) -->
+<section class="pb-28">
+  <div class="swiper hero-swiper h-[520px] md:h-[460px]">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide px-6">
+        <div class="max-w-6xl mx-auto h-full rounded-[2.5rem] bg-brand-500 p-10 md:p-16 grid md:grid-cols-2 gap-10 items-center">
+          <div><p class="font-semibold flex items-center gap-2"><i data-lucide="smartphone" class="w-5 h-5"></i> Mobile Apps</p><h2 class="mt-4 text-4xl md:text-6xl font-bold tracking-tighter leading-tight">One codebase. Android and iOS.</h2><p class="mt-4 max-w-md">Flutter and React Native apps, shipped on both platforms at once, with Firebase behind them.</p></div>
+          <div class="hidden md:block h-80 rounded-3xl overflow-hidden relative"><img src="https://picsum.photos/seed/codexslide1/800/600" alt="" class="absolute inset-0 w-full h-full object-cover" /></div>
+        </div>
+      </div>
+      <div class="swiper-slide px-6">
+        <div class="max-w-6xl mx-auto h-full rounded-[2.5rem] bg-black text-white p-10 md:p-16 grid md:grid-cols-2 gap-10 items-center">
+          <div><p class="text-brand-400 font-semibold flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5"></i> E-commerce</p><h2 class="mt-4 text-4xl md:text-6xl font-bold tracking-tighter leading-tight">Stores ready to take payments on day one.</h2><p class="mt-4 text-neutral-400 max-w-md">Shopify and WooCommerce with Razorpay, Stripe and PayPal built in.</p></div>
+          <div class="hidden md:block h-80 rounded-3xl overflow-hidden relative"><img src="https://picsum.photos/seed/codexslide2/800/600" alt="" class="absolute inset-0 w-full h-full object-cover" /></div>
+        </div>
+      </div>
+      <div class="swiper-slide px-6">
+        <div class="max-w-6xl mx-auto h-full rounded-[2.5rem] bg-neutral-100 p-10 md:p-16 grid md:grid-cols-2 gap-10 items-center">
+          <div><p class="text-brand-700 font-semibold flex items-center gap-2"><i data-lucide="code-2" class="w-5 h-5"></i> MERN &amp; Laravel</p><h2 class="mt-4 text-4xl md:text-6xl font-bold tracking-tighter leading-tight">Full-stack platforms built to scale.</h2><p class="mt-4 text-neutral-600 max-w-md">REST APIs, dashboards and CRMs, production-ready from the first deploy.</p></div>
+          <div class="hidden md:block h-80 rounded-3xl overflow-hidden relative"><img src="https://picsum.photos/seed/codexslide3/800/600" alt="" class="absolute inset-0 w-full h-full object-cover" /></div>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<!-- IMAGE ACCORDION -->
+<section id="showcase" class="max-w-6xl mx-auto px-6 pb-28">
+  <div class="reveal mb-12"><p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Our work</p><h2 class="mt-3 text-5xl md:text-6xl font-bold tracking-tighter">Pick a project to explore.</h2></div>
+  <div class="acc flex-col md:flex-row">
+    <div class="acc-panel active" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexweb/900/800" alt="" /><span class="vert">Websites</span><div class="label"><p class="font-bold text-2xl flex items-center gap-2"><i data-lucide="globe" class="w-6 h-6"></i> Websites</p><p class="text-neutral-200 mt-1">React, WordPress &amp; Laravel builds</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexapp/900/800" alt="" /><span class="vert">Mobile Apps</span><div class="label"><p class="font-bold text-2xl flex items-center gap-2"><i data-lucide="smartphone" class="w-6 h-6"></i> Mobile Apps</p><p class="text-neutral-200 mt-1">Flutter &amp; React Native</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexstore/900/800" alt="" /><span class="vert">Stores</span><div class="label"><p class="font-bold text-2xl flex items-center gap-2"><i data-lucide="shopping-bag" class="w-6 h-6"></i> Stores</p><p class="text-neutral-200 mt-1">Shopify &amp; WooCommerce</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexbrand/900/800" alt="" /><span class="vert">Branding</span><div class="label"><p class="font-bold text-2xl flex items-center gap-2"><i data-lucide="pen-tool" class="w-6 h-6"></i> Branding</p><p class="text-neutral-200 mt-1">Logos and identities</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexseo/900/800" alt="" /><span class="vert">Local SEO</span><div class="label"><p class="font-bold text-2xl flex items-center gap-2"><i data-lucide="map-pin" class="w-6 h-6"></i> Local SEO</p><p class="text-neutral-200 mt-1">Found on Search and Maps</p></div></div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="max-w-6xl mx-auto px-6 pb-28 grid lg:grid-cols-2 gap-12 items-center">
+  <div class="reveal">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Showreel</p>
+    <h2 class="mt-3 text-5xl font-bold tracking-tighter">See how we build, step by step.</h2>
+    <p class="mt-5 text-neutral-600 text-lg">From the first discovery call to a live product. Swap this with your own video whenever you're ready.</p>
+  </div>
+  <div id="player" class="reveal relative aspect-video rounded-[2rem] overflow-hidden bg-black cursor-pointer group" onclick="togglePlay()">
+    <img src="https://picsum.photos/seed/codexvideo/900/500" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50" />
+    <div class="absolute inset-0 flex items-end justify-center gap-2 pb-28">
+      <span class="bar w-2.5 h-10 rounded bg-brand-400"></span><span class="bar w-2.5 h-20 rounded bg-brand-400" style="animation-delay:.2s"></span><span class="bar w-2.5 h-14 rounded bg-brand-400" style="animation-delay:.4s"></span><span class="bar w-2.5 h-24 rounded bg-brand-400" style="animation-delay:.1s"></span><span class="bar w-2.5 h-16 rounded bg-brand-400" style="animation-delay:.3s"></span><span class="bar w-2.5 h-20 rounded bg-brand-400" style="animation-delay:.5s"></span><span class="bar w-2.5 h-12 rounded bg-brand-400" style="animation-delay:.15s"></span>
+    </div>
+    <div class="absolute inset-0 grid place-items-center">
+      <span id="playIcon" class="grid place-items-center w-20 h-20 rounded-full bg-brand-500 text-black shadow-xl group-hover:scale-110 transition"><i data-lucide="play" class="w-8 h-8"></i></span>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-black/80 to-transparent">
+      <div class="h-1.5 rounded-full bg-white/20 overflow-hidden"><div id="progress" class="h-full w-0 bg-brand-400"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTO TABS -->
+<section id="stack" class="bg-black text-white py-28 px-6">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-brand-400 font-semibold text-sm uppercase tracking-widest">The stack</p>
+    <h2 class="mt-3 text-5xl md:text-6xl font-bold tracking-tighter max-w-3xl">Tools our team uses to build modern products.</h2>
+    <div class="mt-14 grid md:grid-cols-5 gap-6">
+      <div class="md:col-span-2 space-y-3" id="tabList"></div>
+      <div class="md:col-span-3 rounded-[2rem] bg-white/5 border border-white/10 p-10 min-h-[300px] flex items-center"><div id="tabPanel" class="transition-opacity duration-500 w-full"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY STACKING CARDS -->
+<section id="process" class="max-w-5xl mx-auto px-6 py-28">
+  <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">The process</p>
+  <h2 class="mt-3 text-5xl font-bold tracking-tighter mb-14">From brief to live, in four steps.</h2>
+  <div class="space-y-6 pb-[20vh]">
+    <div class="stack-card sticky top-28 rounded-[2rem] bg-white border border-black/10 p-10 grid md:grid-cols-5 gap-6"><span class="md:col-span-1 text-7xl font-bold text-brand-500 tracking-tighter">01</span><div class="md:col-span-4"><i data-lucide="message-circle" class="text-brand-600 mb-4"></i><h3 class="text-3xl font-bold">Discovery call</h3><p class="mt-3 text-neutral-600">We talk through your goals, audience, and what success looks like. No fluff, just clarity.</p></div></div>
+    <div class="stack-card sticky top-32 rounded-[2rem] bg-brand-50 border border-brand-100 p-10 grid md:grid-cols-5 gap-6"><span class="md:col-span-1 text-7xl font-bold text-brand-600 tracking-tighter">02</span><div class="md:col-span-4"><i data-lucide="pen-tool" class="text-brand-600 mb-4"></i><h3 class="text-3xl font-bold">Design first</h3><p class="mt-3 text-neutral-600">Wireframe and design before code. You approve the look before we build anything.</p></div></div>
+    <div class="stack-card sticky top-36 rounded-[2rem] bg-neutral-900 text-white p-10 grid md:grid-cols-5 gap-6"><span class="md:col-span-1 text-7xl font-bold text-brand-400 tracking-tighter">03</span><div class="md:col-span-4"><i data-lucide="git-branch" class="text-brand-400 mb-4"></i><h3 class="text-3xl font-bold">Build &amp; review</h3><p class="mt-3 text-neutral-400">Regular check-ins and a staging link so you can review before go-live.</p></div></div>
+    <div class="stack-card sticky top-40 rounded-[2rem] bg-brand-500 text-black p-10 grid md:grid-cols-5 gap-6"><span class="md:col-span-1 text-7xl font-bold tracking-tighter">04</span><div class="md:col-span-4"><i data-lucide="rocket" class="mb-4"></i><h3 class="text-3xl font-bold">Launch &amp; support</h3><p class="mt-3">Go live, then stay around for questions and tweaks. A partner, not a ghost.</p></div></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="max-w-6xl mx-auto px-6 pb-28">
+  <div class="reveal max-w-3xl">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Read this before you hire anyone</p>
+    <h2 class="mt-4 text-5xl md:text-6xl font-bold tracking-tighter leading-tight">Don't fall for the "cheap &amp; 2-day" trap.</h2>
+  </div>
+  <div class="mt-12 grid md:grid-cols-2 gap-4">
+    <div class="reveal rounded-[2rem] border border-black/10 p-10">
+      <h3 class="font-semibold text-neutral-500 mb-6">The "cheap &amp; quick" trap</h3>
+      <ul class="space-y-4 text-neutral-600">
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 shrink-0"></i>Low price today, bigger repair bills tomorrow</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 shrink-0"></i>Rushed 2-3 day builds full of bugs</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 shrink-0"></i>Zero support once they're paid</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 shrink-0"></i>Copy-pasted templates from someone else's project</li>
+      </ul>
+    </div>
+    <div class="reveal rounded-[2rem] bg-brand-500 p-10">
+      <h3 class="font-bold mb-6">What you get with codexaman</h3>
+      <ul class="space-y-4">
+        <li class="flex gap-3"><i data-lucide="check" class="shrink-0"></i>Code built from scratch, 100% yours</li>
+        <li class="flex gap-3"><i data-lucide="check" class="shrink-0"></i>Fast, optimized performance from day one</li>
+        <li class="flex gap-3"><i data-lucide="check" class="shrink-0"></i>Realistic timelines, done right</li>
+        <li class="flex gap-3"><i data-lucide="check" class="shrink-0"></i>Real support after launch, not silence</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="max-w-6xl mx-auto px-6 pb-28">
+  <div class="reveal max-w-2xl">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Pricing</p>
+    <h2 class="mt-3 text-5xl md:text-6xl font-bold tracking-tighter">Transparent. Zero surprises.</h2>
+    <p class="mt-4 text-neutral-600">Pay once, own it forever. Every plan includes a free basic logo, 6 months of minor changes, no revision fees, and lifetime query support.</p>
+  </div>
+  <div class="mt-14 grid md:grid-cols-3 gap-4 items-stretch">
+    <div class="reveal tilt rounded-[2rem] border border-black/10 p-9 flex flex-col">
+      <h3 class="font-bold text-xl">Starter</h3><p class="text-neutral-500 text-sm mt-1">Portfolio &amp; landing pages</p>
+      <p class="mt-8 text-5xl font-bold tracking-tighter">₹5,999</p><p class="text-xs text-neutral-500 mt-1">one-time · up to 5 pages</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Portfolio or landing page</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Mobile responsive</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Contact form</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>3-day delivery</li>
+        <li class="flex gap-2 text-neutral-400"><i data-lucide="x" class="w-4 h-4"></i>CMS panel</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full border border-black py-3 font-semibold hover:bg-black hover:text-white transition">Get started</a>
+    </div>
+    <div class="reveal tilt relative rounded-[2rem] bg-black text-white p-9 flex flex-col md:-translate-y-4">
+      <span class="absolute -top-3 left-9 bg-brand-500 text-black text-xs font-bold px-3 py-1 rounded-full">Most popular</span>
+      <h3 class="font-bold text-xl">Business</h3><p class="text-neutral-400 text-sm mt-1">Full website, up to 10 pages</p>
+      <p class="mt-8 text-5xl font-bold tracking-tighter text-brand-400">₹8,999</p><p class="text-xs text-neutral-400 mt-1">one-time · up to 10 pages</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Up to 10 pages</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>WordPress + Elementor</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>5-day delivery</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Full CMS access</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Blog / portfolio section</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full bg-brand-500 text-black py-3 font-semibold hover:bg-brand-400 transition">Get started</a>
+    </div>
+    <div class="reveal tilt rounded-[2rem] border border-black/10 p-9 flex flex-col">
+      <h3 class="font-bold text-xl">Custom</h3><p class="text-neutral-500 text-sm mt-1">Apps, stores &amp; complex platforms</p>
+      <p class="mt-8 text-5xl font-bold tracking-tighter">Let's talk</p><p class="text-xs text-neutral-500 mt-1">custom quote · any scale</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Custom integrations &amp; APIs</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Timeline as per scope</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Dedicated priority support</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full border border-black py-3 font-semibold hover:bg-black hover:text-white transition">Get a quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="max-w-6xl mx-auto px-6 pb-28 grid lg:grid-cols-2 gap-12 items-start">
+  <div class="reveal">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Free, no-obligation</p>
+    <h2 class="mt-3 text-5xl md:text-6xl font-bold tracking-tighter leading-tight">Get a free project estimate.</h2>
+    <p class="mt-5 text-neutral-600 text-lg">Tell us about your project. We'll reply within 24 hours.</p>
+    <div class="mt-8 space-y-3 text-neutral-600">
+      <span class="flex items-center gap-3"><i data-lucide="clock" class="text-brand-600 w-5 h-5"></i>Reply within 24 hours</span>
+      <span class="flex items-center gap-3"><i data-lucide="shield-check" class="text-brand-600 w-5 h-5"></i>No spam, ever</span>
+    </div>
+  </div>
+  <form id="enquiry" class="reveal rounded-[2rem] border border-black/10 shadow-2xl shadow-black/5 p-8 md:p-10 space-y-5">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium mb-2">Your name</label><input required class="field" placeholder="Jane Doe" /></div>
+      <div><label class="block text-sm font-medium mb-2">Phone / WhatsApp</label><input type="tel" class="field" placeholder="+91 ..." /></div>
+    </div>
+    <div><label class="block text-sm font-medium mb-2">Email address</label><input required type="email" class="field" placeholder="you@company.com" /></div>
+    <div><label class="block text-sm font-medium mb-2">What do you want to build?</label><textarea required rows="4" class="field resize-none" placeholder="A website, app, store or local SEO..."></textarea></div>
+    <button class="w-full bg-black text-white rounded-full py-4 font-semibold hover:bg-brand-600 transition inline-flex justify-center items-center gap-2">Send free enquiry <i data-lucide="send" class="w-4 h-4"></i></button>
+    <p id="thanks" class="hidden text-center text-sm font-medium text-brand-700">Thanks! We'll reply within 24 hours.</p>
+  </form>
+</section>
+
+<!-- TESTIMONIALS SWIPER -->
+<section class="max-w-6xl mx-auto px-6 pb-28">
+  <div class="reveal mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+    <div><p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Client stories</p><h2 class="mt-3 text-5xl font-bold tracking-tighter">What clients say.</h2></div>
+    <p class="text-xs text-neutral-500">Placeholder quotes. Replace with real client feedback.</p>
+  </div>
+  <div class="swiper t-swiper pb-14" style="height:auto">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><div class="h-full rounded-[2rem] border border-black/10 p-8 flex flex-col"><i data-lucide="quote" class="text-brand-500 w-8 h-8"></i><p class="mt-5 text-neutral-700 flex-1">"Our website was live in under a week and it's fast on mobile. The team stayed around for every small change."</p><div class="mt-6 flex items-center gap-3"><img src="https://picsum.photos/seed/client1/96/96" class="w-11 h-11 rounded-full object-cover" alt="" /><div><p class="font-semibold text-sm">Client Name</p><p class="text-xs text-neutral-500">Business owner</p></div></div></div></div>
+      <div class="swiper-slide"><div class="h-full rounded-[2rem] bg-black text-white p-8 flex flex-col"><i data-lucide="quote" class="text-brand-400 w-8 h-8"></i><p class="mt-5 text-neutral-300 flex-1">"The app works the same on Android and iOS. Clean code, and the support never went silent."</p><div class="mt-6 flex items-center gap-3"><img src="https://picsum.photos/seed/client2/96/96" class="w-11 h-11 rounded-full object-cover" alt="" /><div><p class="font-semibold text-sm">Client Name</p><p class="text-xs text-neutral-400">Startup founder</p></div></div></div></div>
+      <div class="swiper-slide"><div class="h-full rounded-[2rem] bg-brand-500 p-8 flex flex-col"><i data-lucide="quote" class="w-8 h-8"></i><p class="mt-5 flex-1">"Local SEO brought us calls from people in our city within a few weeks. Our Google profile finally looks right."</p><div class="mt-6 flex items-center gap-3"><img src="https://picsum.photos/seed/client3/96/96" class="w-11 h-11 rounded-full object-cover" alt="" /><div><p class="font-semibold text-sm">Client Name</p><p class="text-xs text-black/60">Local shop owner</p></div></div></div></div>
+    </div>
+    <div class="t-pag swiper-pagination" style="position:absolute;bottom:0"></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="max-w-4xl mx-auto px-6 pb-28">
+  <div class="reveal mb-10 text-center"><p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">FAQ</p><h2 class="mt-3 text-5xl font-bold tracking-tighter">Questions, answered.</h2></div>
+  <div class="space-y-3">
+    <details class="faq reveal rounded-2xl border border-black/10 p-6 group"><summary class="flex justify-between items-center font-semibold text-lg">How long does a website take?<i data-lucide="plus" class="plus transition"></i></summary><p class="mt-4 text-neutral-600">Starter sites ship in about 3 days, and Business sites (up to 10 pages) in about 5 days. Custom apps and platforms follow the scope we agree on.</p></details>
+    <details class="faq reveal rounded-2xl border border-black/10 p-6"><summary class="flex justify-between items-center font-semibold text-lg">Is there support after launch?<i data-lucide="plus" class="plus transition"></i></summary><p class="mt-4 text-neutral-600">Yes. Every plan includes lifetime query support and 6 months of minor changes with no revision fees.</p></details>
+    <details class="faq reveal rounded-2xl border border-black/10 p-6"><summary class="flex justify-between items-center font-semibold text-lg">Do you build stores that take payments?<i data-lucide="plus" class="plus transition"></i></summary><p class="mt-4 text-neutral-600">Yes. Shopify and WooCommerce stores are set up with Razorpay, Stripe and PayPal, ready to take payments from day one.</p></details>
+    <details class="faq reveal rounded-2xl border border-black/10 p-6"><summary class="flex justify-between items-center font-semibold text-lg">Do you work with clients outside India?<i data-lucide="plus" class="plus transition"></i></summary><p class="mt-4 text-neutral-600">Yes. We work with businesses across the globe, with async collaboration and international payments.</p></details>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-black text-white rounded-t-[3rem] px-6 pt-20 pb-8">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-[18vw] md:text-[10rem] font-bold tracking-tighter leading-none text-brand-500">codexaman</p>
+    <div class="mt-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6 text-sm text-neutral-400">
+      <div class="flex flex-wrap gap-6"><a href="#services" class="hover:text-white">Services</a><a href="#pricing" class="hover:text-white">Pricing</a><a href="#stack" class="hover:text-white">Stack</a><a href="#contact" class="hover:text-white">Contact</a></div>
+      <div class="flex gap-3">
+        <a href="#" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:bg-brand-500 hover:text-black transition"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:bg-brand-500 hover:text-black transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:bg-brand-500 hover:text-black transition"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+        <a href="#" class="w-10 h-10 grid place-items-center rounded-full border border-white/15 hover:bg-brand-500 hover:text-black transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+    <p class="mt-8 text-xs text-neutral-500">© 2026 codexaman · Kolkata, India</p>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+
+  new Swiper('.hero-swiper', {
+    loop: true, speed: 700, slidesPerView: 1,
+    autoplay: { delay: 5000, disableOnInteraction: false },
+    pagination: { el: '.swiper-pagination', clickable: true }
+  });
+
+  document.getElementById('menuBtn').addEventListener('click', () => document.getElementById('drawer').classList.toggle('hidden'));
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function spotMove(e, el) { const r = el.getBoundingClientRect(); el.style.setProperty('--x', (e.clientX - r.left) + 'px'); el.style.setProperty('--y', (e.clientY - r.top) + 'px'); }
+
+  const co = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, to = +el.dataset.to; let n = 0; const step = Math.max(1, Math.ceil(to / 40));
+    const t = setInterval(() => { n += step; if (n >= to) { n = to; clearInterval(t); } el.textContent = n; }, 30);
+    co.unobserve(el);
+  }));
+  document.querySelectorAll('.counter').forEach(el => co.observe(el));
+
+  function openPanel(p) { document.querySelectorAll('.acc-panel').forEach(x => x.classList.remove('active')); p.classList.add('active'); }
+
+  let playing = false, prog = 0, vTimer;
+  function togglePlay() {
+    playing = !playing;
+    document.getElementById('player').classList.toggle('playing', playing);
+    document.getElementById('playIcon').innerHTML = playing ? '<i data-lucide="pause" class="w-8 h-8"></i>' : '<i data-lucide="play" class="w-8 h-8"></i>';
+    lucide.createIcons();
+    clearInterval(vTimer);
+    if (playing) vTimer = setInterval(() => { prog = (prog + 0.5) % 100; document.getElementById('progress').style.width = prog + '%'; }, 100);
+  }
+
+  const tabs = [
+    { t: 'WordPress & WooCommerce', icon: 'shopping-bag', d: 'Your team manages content itself. Full e-commerce with global payment gateways.', tags: ['Razorpay','Stripe','PayPal'] },
+    { t: 'React & React Native', icon: 'atom', d: 'Interactive interfaces for the web and mobile, built with modern component patterns.', tags: ['React','React Native','Expo'] },
+    { t: 'Laravel & MERN', icon: 'server', d: 'Robust, scalable web applications, from REST APIs to full-stack platforms.', tags: ['PHP 8+','Node.js','MongoDB'] },
+    { t: 'Flutter Apps', icon: 'smartphone', d: 'One codebase, two platforms. Ship on Android and iOS simultaneously.', tags: ['Android','iOS','Dart'] },
+    { t: 'Firebase & Supabase', icon: 'database', d: 'Real-time sync, authentication and storage without managing your own servers.', tags: ['Auth','Storage','Serverless'] }
+  ];
+  let cur = 0, tabTimer;
+  const list = document.getElementById('tabList'), panel = document.getElementById('tabPanel');
+  function renderTabs() {
+    list.innerHTML = tabs.map((x, i) => `
+      <button data-i="${i}" class="w-full text-left rounded-2xl px-6 py-5 border transition flex items-center gap-4 ${i===cur ? 'bg-brand-500 text-black border-brand-500' : 'border-white/10 text-neutral-300 hover:bg-white/5'}">
+        <i data-lucide="${x.icon}" class="w-5 h-5 shrink-0"></i><span class="font-semibold">${x.t}</span>
+      </button>`).join('');
+    list.querySelectorAll('button').forEach(b => b.addEventListener('click', () => { show(+b.dataset.i); startTabs(); }));
+    panel.style.opacity = 0;
+    setTimeout(() => {
+      panel.innerHTML = `<div class="flex items-center gap-3 text-brand-400"><i data-lucide="${tabs[cur].icon}" class="w-8 h-8"></i><span class="font-mono text-sm">0${cur+1} / 0${tabs.length}</span></div><h3 class="mt-5 text-4xl font-bold tracking-tighter">${tabs[cur].t}</h3><p class="mt-4 text-neutral-300 text-lg">${tabs[cur].d}</p><div class="mt-6 flex flex-wrap gap-2">${tabs[cur].tags.map(g => `<span class="text-xs border border-white/15 rounded-full px-3 py-1">${g}</span>`).join('')}</div>`;
+      panel.style.opacity = 1;
+      lucide.createIcons();
+    }, 250);
+    lucide.createIcons();
+  }
+  function show(i) { cur = i; renderTabs(); }
+  function startTabs() { clearInterval(tabTimer); tabTimer = setInterval(() => show((cur + 1) % tabs.length), 4500); }
+  renderTabs(); startTabs();
+
+  new Swiper('.t-swiper', {
+    loop: true, spaceBetween: 24, slidesPerView: 1,
+    breakpoints: { 768: { slidesPerView: 2 }, 1100: { slidesPerView: 3 } },
+    autoplay: { delay: 4000, disableOnInteraction: false },
+    pagination: { el: '.t-pag', clickable: true }
+  });
+
+  // scroll progress + cursor glow
+  const pb = document.getElementById('progressBar');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    pb.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, { passive: true });
+  const cg = document.getElementById('cursorGlow');
+  window.addEventListener('mousemove', e => { cg.style.left = e.clientX + 'px'; cg.style.top = e.clientY + 'px'; });
+
+  document.getElementById('enquiry').addEventListener('submit', e => { e.preventDefault(); document.getElementById('thanks').classList.remove('hidden'); e.target.reset(); });
+</script>
+</body>
+</html>

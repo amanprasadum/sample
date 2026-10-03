@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>codexaman | Software, Apps & Websites</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { brand: { 50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d' } },
+    keyframes: { marquee: { from:{transform:'translateX(0)'}, to:{transform:'translateX(-50%)'} }, bar: { from:{transform:'scaleY(.3)'}, to:{transform:'scaleY(1)'} } },
+    animation: { marquee:'marquee 30s linear infinite', bar:'bar .8s ease-in-out infinite alternate' }
+  } } }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+<style>
+  .swiper{position:relative;overflow:hidden;width:100%;height:100%}
+  .swiper-wrapper{display:flex;width:100%;height:100%;transition-property:transform;transition-timing-function:ease}
+  .swiper-slide{flex-shrink:0;width:100%;height:100%;position:relative}
+  .swiper-pagination{position:absolute;bottom:20px;left:0;right:0;text-align:center;z-index:10}
+  .swiper-pagination-bullet{display:inline-block;width:10px;height:10px;border-radius:99px;background:rgba(255,255,255,.45);margin:0 4px;cursor:pointer;transition:all .3s}
+  .swiper-pagination-bullet-active{background:#fff;width:28px}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  .spot{position:relative;overflow:hidden}
+  .spot::before{content:"";position:absolute;inset:0;background:radial-gradient(360px circle at var(--x,50%) var(--y,50%),rgba(34,197,94,.18),transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+  .spot:hover::before{opacity:1}
+  .spot>*{position:relative}
+  .shine{background:linear-gradient(110deg,#16a34a 30%,#86efac 50%,#16a34a 70%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 4s linear infinite}
+  @keyframes shine{from{background-position:200% 0}to{background-position:-200% 0}}
+  .tag{font-size:.75rem;border:1px solid rgba(0,0,0,.1);border-radius:9999px;padding:.3rem .75rem;background:#fafafa}
+  .field{width:100%;border:1px solid rgba(0,0,0,.12);border-radius:14px;padding:.8rem 1rem;outline:none;transition:border-color .2s,box-shadow .2s}
+  .field:focus{border-color:#16a34a;box-shadow:0 0 0 4px rgba(34,197,94,.15)}
+
+  .acc{display:flex;gap:12px;height:480px}
+  .acc-panel{flex:1;position:relative;border-radius:28px;overflow:hidden;cursor:pointer;transition:flex .7s cubic-bezier(.6,0,.2,1);min-width:0}
+  .acc-panel.active{flex:4}
+  .acc-panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 1s}
+  .acc-panel.active img{transform:scale(1.05)}
+  .acc-panel::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75),rgba(0,0,0,.1) 60%)}
+  .acc-panel .vert{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-weight:600;color:#fff;z-index:2;transition:opacity .3s}
+  .acc-panel.active .vert{opacity:0}
+  .acc-panel .label{position:absolute;bottom:0;left:0;right:0;padding:26px;color:#fff;z-index:2;opacity:0;transition:opacity .4s .2s;white-space:nowrap;overflow:hidden}
+  .acc-panel.active .label{opacity:1}
+
+  .playing .bar{animation:bar .8s ease-in-out infinite alternate}
+  .bar{transform-origin:bottom}
+
+  .stack-card{position:sticky;box-shadow:0 -10px 40px -20px rgba(0,0,0,.25)}
+  details summary{list-style:none;cursor:pointer}
+  details summary::-webkit-details-marker{display:none}
+  details[open] .chev{transform:rotate(180deg)}
+  [data-lucide]{width:20px;height:20px}
+</style>
+</head>
+<body class="bg-white text-neutral-900 antialiased">
+
+<!-- NAV -->
+<header class="fixed top-0 inset-x-0 z-50 bg-white/85 backdrop-blur-xl border-b border-black/5">
+  <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2 font-bold text-lg">
+      <span class="grid place-items-center w-8 h-8 rounded-lg bg-black text-brand-400"><i data-lucide="code-2" class="w-4 h-4"></i></span>codexaman
+    </a>
+    <ul class="hidden lg:flex items-center gap-8 text-sm font-medium text-neutral-700">
+      <li class="group static">
+        <button class="flex items-center gap-1 py-5 hover:text-black">Services <i data-lucide="chevron-down" class="w-4 h-4 group-hover:rotate-180 transition"></i></button>
+        <!-- full-width mega menu -->
+        <div class="hidden group-hover:block fixed inset-x-0 top-16 bg-white border-t border-b border-black/5 shadow-2xl">
+          <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-12 gap-8">
+            <div class="col-span-3">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-4">Build</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="globe" class="text-brand-600"></i><span><b class="block">Website Development</b><span class="text-xs text-neutral-500">React, WordPress, Laravel</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="smartphone" class="text-brand-600"></i><span><b class="block">Mobile Apps</b><span class="text-xs text-neutral-500">Flutter &amp; React Native</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="shopping-bag" class="text-brand-600"></i><span><b class="block">E-commerce Stores</b><span class="text-xs text-neutral-500">Shopify &amp; WooCommerce</span></span></a>
+            </div>
+            <div class="col-span-3">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-4">Get found</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="search" class="text-brand-600"></i><span><b class="block">Local SEO</b><span class="text-xs text-neutral-500">Rank for city searches</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="map-pin" class="text-brand-600"></i><span><b class="block">Google My Business</b><span class="text-xs text-neutral-500">Verified &amp; optimized</span></span></a>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="share-2" class="text-brand-600"></i><span><b class="block">Social Media Setup</b><span class="text-xs text-neutral-500">Instagram, Facebook, LinkedIn</span></span></a>
+            </div>
+            <div class="col-span-2">
+              <p class="text-xs font-semibold uppercase tracking-widest text-brand-600 mb-4">Brand</p>
+              <a href="#services" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="pen-tool" class="text-brand-600"></i><span><b class="block">Logo &amp; Identity</b><span class="text-xs text-neutral-500">Matches your business</span></span></a>
+              <a href="#stack" class="flex gap-3 p-3 rounded-xl hover:bg-brand-50"><i data-lucide="layers" class="text-brand-600"></i><span><b class="block">Our Stack</b><span class="text-xs text-neutral-500">Tools we build with</span></span></a>
+            </div>
+            <div class="col-span-4">
+              <div class="relative h-full min-h-[240px] rounded-3xl overflow-hidden bg-black text-white">
+                <img src="https://picsum.photos/seed/codexmega/800/600" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60" />
+                <div class="relative p-7 h-full flex flex-col justify-end">
+                  <p class="text-brand-400 text-sm font-semibold">Free, no-obligation</p>
+                  <p class="text-2xl font-bold mt-1">Get a free project estimate</p>
+                  <a href="#contact" class="mt-4 inline-flex w-fit items-center gap-2 bg-brand-500 text-black rounded-full px-5 py-2.5 font-semibold">Start a project <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="#showcase" class="hover:text-black">Work</a></li>
+      <li><a href="#process" class="hover:text-black">Process</a></li>
+      <li><a href="#stack" class="hover:text-black">Stack</a></li>
+      <li><a href="#pricing" class="hover:text-black">Pricing</a></li>
+    </ul>
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="hidden sm:inline-flex bg-black text-white text-sm font-medium rounded-full px-5 py-2.5 hover:bg-brand-600 transition">Get free quote</a>
+      <button id="menuBtn" class="lg:hidden p-2" aria-label="Menu"><i data-lucide="menu"></i></button>
+    </div>
+  </nav>
+
+  <!-- mobile / tablet drawer -->
+  <div id="drawer" class="hidden lg:hidden border-t border-black/5 bg-white px-6 py-4 max-h-[80vh] overflow-y-auto">
+    <details class="border-b border-black/5 py-4">
+      <summary class="flex justify-between items-center font-semibold">Services <i data-lucide="chevron-down" class="chev w-5 h-5 transition"></i></summary>
+      <div class="mt-4 grid grid-cols-1 gap-2">
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="globe" class="text-brand-600 w-5 h-5"></i>Website Development</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="smartphone" class="text-brand-600 w-5 h-5"></i>Mobile Apps</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="shopping-bag" class="text-brand-600 w-5 h-5"></i>E-commerce Stores</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="search" class="text-brand-600 w-5 h-5"></i>Local SEO</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="map-pin" class="text-brand-600 w-5 h-5"></i>Google My Business</a>
+        <a href="#services" class="flex items-center gap-3 p-3 rounded-xl bg-brand-50"><i data-lucide="pen-tool" class="text-brand-600 w-5 h-5"></i>Logo &amp; Branding</a>
+      </div>
+    </details>
+    <a href="#showcase" class="block py-4 border-b border-black/5 font-semibold">Work</a>
+    <a href="#process" class="block py-4 border-b border-black/5 font-semibold">Process</a>
+    <a href="#stack" class="block py-4 border-b border-black/5 font-semibold">Stack</a>
+    <a href="#pricing" class="block py-4 border-b border-black/5 font-semibold">Pricing</a>
+    <a href="#contact" class="block mt-4 text-center bg-black text-white rounded-full py-3 font-semibold">Get free quote</a>
+  </div>
+</header>
+
+<!-- HERO SWIPER -->
+<section class="pt-16">
+  <div class="swiper hero-swiper h-[680px] md:h-[620px]">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide bg-black text-white">
+        <div class="max-w-7xl mx-auto h-full px-6 pt-16 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-1.5 text-sm"><span class="w-2 h-2 rounded-full bg-brand-400 animate-pulse"></span>Open for new projects</span>
+            <h1 class="mt-6 text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">A software team that builds <span class="text-brand-400">for MERN stacks, apps &amp; the web.</span></h1>
+            <p class="mt-5 text-neutral-300 max-w-lg">Software development, digital marketing and website development from Kolkata, India, for businesses across the globe.</p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a href="#contact" class="bg-brand-500 text-black rounded-full px-6 py-3 font-semibold hover:bg-brand-400 inline-flex items-center gap-2">Get free quote <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+              <a href="#pricing" class="border border-white/30 rounded-full px-6 py-3 font-semibold hover:bg-white/10">See pricing</a>
+            </div>
+          </div>
+          <div class="hidden md:block relative h-[420px] rounded-3xl overflow-hidden">
+            <img src="https://picsum.photos/seed/codexhero1/900/800" alt="" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide bg-brand-600 text-white">
+        <div class="max-w-7xl mx-auto h-full px-6 pt-16 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p class="font-mono text-sm font-semibold flex items-center gap-2"><i data-lucide="smartphone" class="w-4 h-4"></i> MOBILE APPS</p>
+            <h2 class="mt-4 text-5xl md:text-6xl font-bold tracking-tight">Apps for Android &amp; iOS from one codebase.</h2>
+            <p class="mt-5 max-w-lg text-brand-50">Flutter and React Native apps, shipped on both platforms at once with Firebase powering the backend.</p>
+          </div>
+          <div class="hidden md:block relative h-[420px] rounded-3xl overflow-hidden">
+            <img src="https://picsum.photos/seed/codexhero2/900/800" alt="" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+      <div class="swiper-slide bg-white text-black">
+        <div class="max-w-7xl mx-auto h-full px-6 pt-16 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p class="font-mono text-sm text-brand-600 font-semibold flex items-center gap-2"><i data-lucide="shopping-bag" class="w-4 h-4"></i> E-COMMERCE</p>
+            <h2 class="mt-4 text-5xl md:text-6xl font-bold tracking-tight">Stores ready to take payments from day one.</h2>
+            <p class="mt-5 max-w-lg text-neutral-600">Shopify and WooCommerce with Razorpay, Stripe and PayPal built in.</p>
+          </div>
+          <div class="hidden md:block relative h-[420px] rounded-3xl overflow-hidden">
+            <img src="https://picsum.photos/seed/codexhero3/900/800" alt="" class="absolute inset-0 w-full h-full object-cover" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+    <button class="sw-prev absolute left-4 top-[45%] z-10 w-11 h-11 grid place-items-center rounded-full bg-white/20 text-white hover:bg-white/40 backdrop-blur"><i data-lucide="chevron-left"></i></button>
+    <button class="sw-next absolute right-4 top-[45%] z-10 w-11 h-11 grid place-items-center rounded-full bg-white/20 text-white hover:bg-white/40 backdrop-blur"><i data-lucide="chevron-right"></i></button>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="bg-black text-white py-5 overflow-hidden">
+  <div class="flex w-max animate-marquee gap-12 text-lg font-medium whitespace-nowrap">
+    <span>WordPress</span><span class="text-brand-400">✳</span><span>React</span><span class="text-brand-400">✳</span><span>Laravel</span><span class="text-brand-400">✳</span><span>Shopify</span><span class="text-brand-400">✳</span><span>Flutter</span><span class="text-brand-400">✳</span><span>Local SEO</span><span class="text-brand-400">✳</span><span>Logo Design</span><span class="text-brand-400">✳</span>
+    <span>WordPress</span><span class="text-brand-400">✳</span><span>React</span><span class="text-brand-400">✳</span><span>Laravel</span><span class="text-brand-400">✳</span><span>Shopify</span><span class="text-brand-400">✳</span><span>Flutter</span><span class="text-brand-400">✳</span><span>Local SEO</span><span class="text-brand-400">✳</span><span>Logo Design</span><span class="text-brand-400">✳</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<section class="max-w-6xl mx-auto px-6 py-20">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="reveal spot rounded-3xl border border-black/10 p-8 text-center" onmousemove="spotMove(event,this)"><i data-lucide="briefcase" class="mx-auto text-brand-600 mb-3"></i><p class="text-5xl font-bold"><span class="counter" data-to="50">0</span>+</p><p class="text-neutral-500 mt-2 text-sm">Projects delivered</p></div>
+    <div class="reveal spot rounded-3xl border border-black/10 p-8 text-center" onmousemove="spotMove(event,this)"><i data-lucide="clock" class="mx-auto text-brand-600 mb-3"></i><p class="text-5xl font-bold">3–7</p><p class="text-neutral-500 mt-2 text-sm">Day avg. delivery</p></div>
+    <div class="reveal spot rounded-3xl border border-black/10 p-8 text-center" onmousemove="spotMove(event,this)"><i data-lucide="badge-check" class="mx-auto text-brand-600 mb-3"></i><p class="text-5xl font-bold text-brand-600"><span class="counter" data-to="100">0</span>%</p><p class="text-neutral-500 mt-2 text-sm">On-time rate</p></div>
+    <div class="reveal spot rounded-3xl border border-black/10 p-8 text-center" onmousemove="spotMove(event,this)"><i data-lucide="globe-2" class="mx-auto text-brand-600 mb-3"></i><p class="text-5xl font-bold">Global</p><p class="text-neutral-500 mt-2 text-sm">Client base</p></div>
+  </div>
+</section>
+
+<!-- IMAGE ACCORDION -->
+<section id="showcase" class="max-w-7xl mx-auto px-6 pb-24">
+  <div class="reveal max-w-2xl mb-12">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Our work</p>
+    <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight">Click a project to explore.</h2>
+  </div>
+  <div class="acc flex-col md:flex-row">
+    <div class="acc-panel active" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexweb/900/800" alt="" /><span class="vert">Websites</span><div class="label"><p class="font-bold text-xl flex items-center gap-2"><i data-lucide="globe" class="w-5 h-5"></i> Websites</p><p class="text-sm text-neutral-200">React, WordPress &amp; Laravel builds</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexapp/900/800" alt="" /><span class="vert">Mobile Apps</span><div class="label"><p class="font-bold text-xl flex items-center gap-2"><i data-lucide="smartphone" class="w-5 h-5"></i> Mobile Apps</p><p class="text-sm text-neutral-200">Flutter &amp; React Native</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexstore/900/800" alt="" /><span class="vert">Stores</span><div class="label"><p class="font-bold text-xl flex items-center gap-2"><i data-lucide="shopping-bag" class="w-5 h-5"></i> Stores</p><p class="text-sm text-neutral-200">Shopify &amp; WooCommerce</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexbrand/900/800" alt="" /><span class="vert">Branding</span><div class="label"><p class="font-bold text-xl flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5"></i> Branding</p><p class="text-sm text-neutral-200">Logos and identities</p></div></div>
+    <div class="acc-panel" onclick="openPanel(this)"><img src="https://picsum.photos/seed/codexseo/900/800" alt="" /><span class="vert">Local SEO</span><div class="label"><p class="font-bold text-xl flex items-center gap-2"><i data-lucide="map-pin" class="w-5 h-5"></i> Local SEO</p><p class="text-sm text-neutral-200">Found on Search and Maps</p></div></div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<section class="px-6 pb-24">
+  <div class="reveal max-w-6xl mx-auto grid lg:grid-cols-2 gap-10 items-center">
+    <div>
+      <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Showreel</p>
+      <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight">See how we build, step by step.</h2>
+      <p class="mt-5 text-neutral-600">From the first discovery call to a live product. Replace this with your own video whenever you have one.</p>
+    </div>
+    <div id="player" class="relative aspect-video rounded-3xl overflow-hidden bg-black cursor-pointer group" onclick="togglePlay()">
+      <img src="https://picsum.photos/seed/codexvideo/900/500" alt="" class="absolute inset-0 w-full h-full object-cover opacity-60" />
+      <div class="absolute inset-0 flex items-end justify-center gap-2 pb-28 px-10">
+        <span class="bar w-2.5 h-10 rounded bg-brand-400" style="animation-delay:0s"></span><span class="bar w-2.5 h-20 rounded bg-brand-400" style="animation-delay:.2s"></span><span class="bar w-2.5 h-14 rounded bg-brand-400" style="animation-delay:.4s"></span><span class="bar w-2.5 h-24 rounded bg-brand-400" style="animation-delay:.1s"></span><span class="bar w-2.5 h-16 rounded bg-brand-400" style="animation-delay:.3s"></span><span class="bar w-2.5 h-20 rounded bg-brand-400" style="animation-delay:.5s"></span><span class="bar w-2.5 h-12 rounded bg-brand-400" style="animation-delay:.15s"></span>
+      </div>
+      <div class="absolute inset-0 grid place-items-center">
+        <span id="playIcon" class="grid place-items-center w-20 h-20 rounded-full bg-white text-black shadow-xl group-hover:scale-110 transition"><i data-lucide="play" class="w-8 h-8 fill-black"></i></span>
+      </div>
+      <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-black/80 to-transparent">
+        <div class="h-1.5 rounded-full bg-white/20 overflow-hidden"><div id="progress" class="h-full w-0 bg-brand-400"></div></div>
+        <p class="mt-3 text-xs text-white/70 font-mono">00:00 / 02:30</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTO TABS -->
+<section id="stack" class="bg-neutral-950 text-white py-24 px-6">
+  <div class="max-w-6xl mx-auto">
+    <p class="text-brand-400 font-semibold text-sm uppercase tracking-widest">The stack</p>
+    <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight">Tools our team uses to build modern products.</h2>
+    <div class="mt-12 grid md:grid-cols-5 gap-6">
+      <div class="md:col-span-2 space-y-2" id="tabList"></div>
+      <div class="md:col-span-3 rounded-3xl border border-white/10 bg-white/5 p-8 min-h-[300px] flex items-center">
+        <div id="tabPanel" class="transition-opacity duration-500 w-full"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STICKY STACKING CARDS -->
+<section id="process" class="max-w-5xl mx-auto px-6 py-24">
+  <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">The process</p>
+  <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight mb-14">From brief to live, in four steps.</h2>
+  <div class="space-y-6 pb-[20vh]">
+    <div class="stack-card sticky rounded-3xl bg-white border border-black/10 p-10 grid md:grid-cols-5 gap-6" style="top:100px"><span class="md:col-span-1 text-6xl font-bold text-brand-500">01</span><div class="md:col-span-4"><i data-lucide="message-circle" class="text-brand-600 mb-4"></i><h3 class="text-2xl font-bold">Discovery call</h3><p class="mt-3 text-neutral-600">We talk through your goals, audience, and what success looks like. No fluff, just clarity.</p></div></div>
+    <div class="stack-card sticky rounded-3xl bg-brand-50 border border-brand-100 p-10 grid md:grid-cols-5 gap-6" style="top:120px"><span class="md:col-span-1 text-6xl font-bold text-brand-600">02</span><div class="md:col-span-4"><i data-lucide="pen-tool" class="text-brand-600 mb-4"></i><h3 class="text-2xl font-bold">Design first</h3><p class="mt-3 text-neutral-600">Wireframe and design before code. You approve the look before we build anything.</p></div></div>
+    <div class="stack-card sticky rounded-3xl bg-neutral-900 text-white p-10 grid md:grid-cols-5 gap-6" style="top:140px"><span class="md:col-span-1 text-6xl font-bold text-brand-400">03</span><div class="md:col-span-4"><i data-lucide="git-branch" class="text-brand-400 mb-4"></i><h3 class="text-2xl font-bold">Build &amp; review</h3><p class="mt-3 text-neutral-400">Regular check-ins and a staging link so you can review before go-live.</p></div></div>
+    <div class="stack-card sticky rounded-3xl bg-brand-500 text-black p-10 grid md:grid-cols-5 gap-6" style="top:160px"><span class="md:col-span-1 text-6xl font-bold">04</span><div class="md:col-span-4"><i data-lucide="rocket" class="mb-4"></i><h3 class="text-2xl font-bold">Launch &amp; support</h3><p class="mt-3">Go live, then stay around for questions and tweaks. A partner, not a ghost.</p></div></div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="max-w-6xl mx-auto px-6 pb-24">
+  <div class="reveal max-w-3xl">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Read this before you hire anyone</p>
+    <h2 class="mt-4 text-4xl md:text-5xl font-bold tracking-tight">Don't fall for the "cheap &amp; 2-day delivery" trap.</h2>
+  </div>
+  <div class="mt-12 grid md:grid-cols-2 gap-4">
+    <div class="reveal rounded-3xl border border-black/10 p-8">
+      <h3 class="font-semibold text-neutral-500 mb-6">The "cheap &amp; quick" trap</h3>
+      <ul class="space-y-4 text-neutral-600">
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 w-5 h-5 shrink-0"></i>Low price today, bigger repair bills tomorrow</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 w-5 h-5 shrink-0"></i>Rushed 2-3 day builds full of bugs</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 w-5 h-5 shrink-0"></i>Zero support once they're paid</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 w-5 h-5 shrink-0"></i>Copy-pasted templates from someone else's project</li>
+        <li class="flex gap-3"><i data-lucide="x" class="text-red-500 w-5 h-5 shrink-0"></i>Messy code nobody else can maintain</li>
+      </ul>
+    </div>
+    <div class="reveal rounded-3xl bg-black text-white p-8">
+      <h3 class="font-bold mb-6">What you get with codexaman</h3>
+      <ul class="space-y-4">
+        <li class="flex gap-3"><i data-lucide="check" class="text-brand-400 w-5 h-5 shrink-0"></i>Code built from scratch, 100% yours</li>
+        <li class="flex gap-3"><i data-lucide="check" class="text-brand-400 w-5 h-5 shrink-0"></i>Clean, written for your project only</li>
+        <li class="flex gap-3"><i data-lucide="check" class="text-brand-400 w-5 h-5 shrink-0"></i>Fast, optimized performance from day one</li>
+        <li class="flex gap-3"><i data-lucide="check" class="text-brand-400 w-5 h-5 shrink-0"></i>Realistic timelines, done right</li>
+        <li class="flex gap-3"><i data-lucide="check" class="text-brand-400 w-5 h-5 shrink-0"></i>Real support after launch, not silence</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="max-w-6xl mx-auto px-6 pb-24">
+  <div class="reveal text-center max-w-2xl mx-auto">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Pricing</p>
+    <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight">Transparent pricing. Zero surprises.</h2>
+    <p class="mt-4 text-neutral-600">Pay once, own it forever. Every plan includes a free basic logo, 6 months of minor changes, no revision fees, and lifetime query support.</p>
+  </div>
+  <div class="mt-14 grid md:grid-cols-3 gap-4 items-stretch">
+    <div class="reveal rounded-3xl border border-black/10 p-8 flex flex-col">
+      <h3 class="font-bold text-xl">Starter</h3><p class="text-neutral-500 text-sm mt-1">Portfolio &amp; landing pages</p>
+      <p class="mt-6 text-5xl font-bold">₹5,999</p><p class="text-xs text-neutral-500 mt-1">one-time · up to 5 pages</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Portfolio or landing page</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Mobile responsive</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Contact form</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>3-day delivery</li>
+        <li class="flex gap-2 text-neutral-400"><i data-lucide="x" class="w-4 h-4"></i>CMS panel</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full border border-black py-3 font-semibold hover:bg-black hover:text-white transition">Get started</a>
+    </div>
+    <div class="reveal relative rounded-3xl bg-black text-white p-8 flex flex-col md:-translate-y-4 shadow-2xl shadow-brand-500/20">
+      <span class="absolute -top-3 left-8 bg-brand-500 text-black text-xs font-bold px-3 py-1 rounded-full">Most popular</span>
+      <h3 class="font-bold text-xl">Business</h3><p class="text-neutral-400 text-sm mt-1">Full website, up to 10 pages</p>
+      <p class="mt-6 text-5xl font-bold text-brand-400">₹8,999</p><p class="text-xs text-neutral-400 mt-1">one-time · up to 10 pages</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Up to 10 pages</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>WordPress + Elementor</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>5-day delivery</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Full CMS access</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i>Blog / portfolio section</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full bg-brand-500 text-black py-3 font-semibold hover:bg-brand-400 transition">Get started</a>
+    </div>
+    <div class="reveal rounded-3xl border border-black/10 p-8 flex flex-col">
+      <h3 class="font-bold text-xl">Custom</h3><p class="text-neutral-500 text-sm mt-1">Apps, stores &amp; complex platforms</p>
+      <p class="mt-6 text-5xl font-bold">Let's talk</p><p class="text-xs text-neutral-500 mt-1">custom quote · any scale</p>
+      <ul class="mt-8 space-y-3 text-sm flex-1">
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Custom integrations &amp; APIs</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Timeline as per scope</li>
+        <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-600"></i>Dedicated priority support</li>
+      </ul>
+      <a href="#contact" class="mt-8 text-center rounded-full border border-black py-3 font-semibold hover:bg-black hover:text-white transition">Get a quote</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="max-w-6xl mx-auto px-6 pb-24 grid lg:grid-cols-2 gap-12 items-start">
+  <div class="reveal">
+    <p class="text-brand-600 font-semibold text-sm uppercase tracking-widest">Free, no-obligation</p>
+    <h2 class="mt-3 text-4xl md:text-5xl font-bold tracking-tight">Get a free project estimate.</h2>
+    <p class="mt-5 text-neutral-600 text-lg">Tell us about your project. We'll reply within 24 hours.</p>
+    <div class="mt-8 flex flex-col gap-3 text-neutral-600">
+      <span class="flex items-center gap-3"><i data-lucide="clock" class="text-brand-600 w-5 h-5"></i>Reply within 24 hours</span>
+      <span class="flex items-center gap-3"><i data-lucide="shield-check" class="text-brand-600 w-5 h-5"></i>No spam, ever</span>
+    </div>
+  </div>
+  <form id="enquiry" class="reveal rounded-3xl border border-black/10 shadow-xl shadow-black/5 p-8 space-y-5">
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div><label class="block text-sm font-medium mb-2">Your name</label><input required class="field" placeholder="Jane Doe" /></div>
+      <div><label class="block text-sm font-medium mb-2">Phone / WhatsApp</label><input type="tel" class="field" placeholder="+91 ..." /></div>
+    </div>
+    <div><label class="block text-sm font-medium mb-2">Email address</label><input required type="email" class="field" placeholder="you@company.com" /></div>
+    <div><label class="block text-sm font-medium mb-2">What do you want to build?</label><textarea required rows="4" class="field resize-none" placeholder="A website, app, store or local SEO..."></textarea></div>
+    <button class="w-full bg-black text-white rounded-full py-3.5 font-semibold hover:bg-brand-600 transition inline-flex justify-center items-center gap-2">Send free enquiry <i data-lucide="send" class="w-4 h-4"></i></button>
+    <p id="thanks" class="hidden text-center text-sm font-medium text-brand-700">Thanks! We'll reply within 24 hours.</p>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-black/10">
+  <div class="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+    <span class="flex items-center gap-2 font-bold"><span class="grid place-items-center w-7 h-7 rounded-lg bg-black text-brand-400"><i data-lucide="code-2" class="w-4 h-4"></i></span>codexaman</span>
+    <div class="flex flex-wrap gap-6 text-sm text-neutral-600">
+      <a href="#services" class="hover:text-black">Services</a><a href="#pricing" class="hover:text-black">Pricing</a><a href="#stack" class="hover:text-black">Stack</a><a href="#contact" class="hover:text-black">Contact</a>
+    </div>
+    <div class="flex gap-3">
+      <a href="#" class="w-9 h-9 grid place-items-center rounded-full border border-black/10 hover:bg-black hover:text-white transition"><i data-lucide="facebook" class="w-4 h-4"></i></a>
+      <a href="#" class="w-9 h-9 grid place-items-center rounded-full border border-black/10 hover:bg-black hover:text-white transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
+      <a href="#" class="w-9 h-9 grid place-items-center rounded-full border border-black/10 hover:bg-black hover:text-white transition"><i data-lucide="linkedin" class="w-4 h-4"></i></a>
+      <a href="#" class="w-9 h-9 grid place-items-center rounded-full border border-black/10 hover:bg-black hover:text-white transition"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+  <p class="text-center text-xs text-neutral-500 pb-8">© 2026 codexaman · Kolkata, India</p>
+</footer>
+
+<script>
+  // Lucide icons
+  lucide.createIcons();
+
+  // Swiper hero
+  new Swiper('.hero-swiper', {
+    loop: true, speed: 700,
+    autoplay: { delay: 4500, disableOnInteraction: false },
+    pagination: { el: '.swiper-pagination', clickable: true },
+    navigation: { nextEl: '.sw-next', prevEl: '.sw-prev' }
+  });
+
+  // mobile drawer
+  document.getElementById('menuBtn').addEventListener('click', () => {
+    document.getElementById('drawer').classList.toggle('hidden');
+  });
+
+  // reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // spotlight
+  function spotMove(e, el) { const r = el.getBoundingClientRect(); el.style.setProperty('--x', (e.clientX - r.left) + 'px'); el.style.setProperty('--y', (e.clientY - r.top) + 'px'); }
+
+  // counters
+  const co = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, to = +el.dataset.to; let n = 0; const step = Math.max(1, Math.ceil(to / 40));
+    const t = setInterval(() => { n += step; if (n >= to) { n = to; clearInterval(t); } el.textContent = n; }, 30);
+    co.unobserve(el);
+  }));
+  document.querySelectorAll('.counter').forEach(el => co.observe(el));
+
+  // image accordion
+  function openPanel(p) { document.querySelectorAll('.acc-panel').forEach(x => x.classList.remove('active')); p.classList.add('active'); }
+
+  // video
+  let playing = false, prog = 0, vTimer;
+  function togglePlay() {
+    playing = !playing;
+    document.getElementById('player').classList.toggle('playing', playing);
+    document.getElementById('playIcon').innerHTML = playing ? '<i data-lucide="pause" class="w-8 h-8"></i>' : '<i data-lucide="play" class="w-8 h-8 fill-black"></i>';
+    lucide.createIcons();
+    clearInterval(vTimer);
+    if (playing) vTimer = setInterval(() => { prog = (prog + 0.5) % 100; document.getElementById('progress').style.width = prog + '%'; }, 100);
+  }
+
+  // auto-switching tabs
+  const tabs = [
+    { t: 'WordPress & WooCommerce', icon: 'shopping-bag', d: 'Your team manages content itself. Full e-commerce with global payment gateways.', tags: ['Razorpay','Stripe','PayPal'] },
+    { t: 'React & React Native', icon: 'atom', d: 'Interactive interfaces for the web and mobile, built with modern component patterns.', tags: ['React','React Native','Expo'] },
+    { t: 'Laravel & MERN', icon: 'server', d: 'Robust, scalable web applications, from REST APIs to full-stack platforms.', tags: ['PHP 8+','Node.js','MongoDB'] },
+    { t: 'Flutter Apps', icon: 'smartphone', d: 'One codebase, two platforms. Ship on Android and iOS simultaneously.', tags: ['Android','iOS','Dart'] },
+    { t: 'Firebase & Supabase', icon: 'database', d: 'Real-time sync, authentication and storage without managing your own servers.', tags: ['Auth','Storage','Serverless'] }
+  ];
+  let cur = 0, tabTimer;
+  const list = document.getElementById('tabList'), panel = document.getElementById('tabPanel');
+  function renderTabs() {
+    list.innerHTML = tabs.map((x, i) => `
+      <button data-i="${i}" class="tabBtn w-full text-left rounded-2xl px-6 py-5 border transition flex items-center gap-4 ${i===cur ? 'bg-white text-black border-white' : 'border-white/10 text-neutral-300 hover:bg-white/5'}">
+        <i data-lucide="${x.icon}" class="w-5 h-5 shrink-0"></i>
+        <span class="font-semibold">${x.t}</span>
+      </button>`).join('');
+    list.querySelectorAll('.tabBtn').forEach(b => b.addEventListener('click', () => { show(+b.dataset.i); startTabs(); }));
+    panel.style.opacity = 0;
+    setTimeout(() => {
+      panel.innerHTML = `<div class="flex items-center gap-3 text-brand-400"><i data-lucide="${tabs[cur].icon}" class="w-7 h-7"></i><span class="font-mono text-sm">0${cur+1} / 0${tabs.length}</span></div><h3 class="mt-5 text-3xl font-bold">${tabs[cur].t}</h3><p class="mt-4 text-neutral-300">${tabs[cur].d}</p><div class="mt-6 flex flex-wrap gap-2">${tabs[cur].tags.map(g => `<span class="tag text-black">${g}</span>`).join('')}</div>`;
+      panel.style.opacity = 1;
+      lucide.createIcons();
+    }, 250);
+    lucide.createIcons();
+  }
+  function show(i) { cur = i; renderTabs(); }
+  function startTabs() { clearInterval(tabTimer); tabTimer = setInterval(() => show((cur + 1) % tabs.length), 4000); }
+  renderTabs(); startTabs();
+
+  // contact
+  document.getElementById('enquiry').addEventListener('submit', e => { e.preventDefault(); document.getElementById('thanks').classList.remove('hidden'); e.target.reset(); });
+</script>
+</body>
+</html>
